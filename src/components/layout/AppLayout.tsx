@@ -11,22 +11,20 @@ import SidebarLinks from "./SidebarLinks";
 
 const AppLayout = () => {
   return (
-    <div className="flex flex-col md:flex-row h-screen">
+    <div className="flex flex-col md:flex-row h-screen ">
       <main className="flex-1 order-1 md:order-2 bg-mist-100 overflow-y-auto">
         <Outlet />
       </main>
 
-      <aside className=" order-2 md:order-1  md:border-r">
-        <div className="hidden md:flex gap-2 items-center my-4 p-4">
+      <aside className="bg-neutral-100 order-2 md:order-1 md:border-r md:border-gray-300/70 md:p-4">
+        <div className="hidden md:flex gap-2 items-center my-4 p-4 ">
           <span className="bg-green-200 p-3 rounded-lg">
             <Zap size={20} color="green" />
           </span>
-          <h1 className="font-bold text-3xl text-center">Energytrack</h1>
+          <h1 className="font-bold font-s text-2xl text-center">Energytrack</h1>
         </div>
 
-        <hr />
-
-        <nav className="flex justify-around bg-white p-3 border-t  border-t-gray-200/5  text-sm  md:flex-col md:justify-start md:gap-4 md:px-3  md:border-t-0  md:w-60">
+        <nav className="flex justify-around  p-3 border-t border-gray-300/70  md:flex-col md:gap-1 md:px-3 md:border-t-0 md:w-60">
           <SidebarLinks
             to="/"
             icon={<LayoutDashboard size={20} />}
