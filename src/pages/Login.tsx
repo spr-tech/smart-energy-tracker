@@ -1,4 +1,4 @@
-import { Zap } from "lucide-react";
+import { Zap, Eye, EyeOff } from "lucide-react";
 import Button from "../components/ui/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -7,7 +7,10 @@ const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [emailError, setEmailError] = useState<string | null>(null);
+
+  //error state
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [showPasswrd, setShowPasswrd] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +23,7 @@ const Login = () => {
     }
   }, [emailError, passwordError]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Reset errors and flag
@@ -52,11 +55,13 @@ const Login = () => {
     if (!isValid) return;
 
     localStorage.setItem("token", "springle");
+    localStorage.setItem("loggedEmail", email);
     navigate("/");
   };
 
   return (
-    <div className="flex flex-col h-screen items-center justify-center bg-gray-100 p-4">
+    <div className="flex flex-col  min-h-screen md:h-screen items-center  justify-center bg-gray-100 p-4 rounded-no">
+      {/* Icon  */}
       <div className="flex flex-col gap-3 items-center mb-6 text-center">
         <span className="bg-emerald-200/30 p-3 rounded-xl">
           <Zap size={50} className="text-emerald-600" />
@@ -67,6 +72,7 @@ const Login = () => {
         </p>
       </div>
 
+      {/*Greetings & instruction */}
       <div className="bg-white shadow-xl shadow-gray-200/50 p-6 rounded-2xl w-full max-w-lg">
         <form onSubmit={handleSubmit} className="flex flex-col w-full">
           <div className="mb-6">
@@ -97,7 +103,7 @@ const Login = () => {
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border border-gray-200 rounded-xl p-3 bg-gray-50/50 outline-none transition-all focus:bg-white focus:border-emerald-500 f"
+              className="border border-gray-200 rounded-xl p-2 bg-gray-50/50 outline-none transition-all focus:bg-white focus:border-emerald-500 f"
             />
             <div className="h-6 mt-1">
               {emailError && (
@@ -118,14 +124,24 @@ const Login = () => {
             >
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border border-gray-200 rounded-xl p-3 bg-gray-50/50 outline-none transition-all focus:bg-white focus:border-emerald-500 "
-            />
+
+            <div className="flex border border-gray-200 rounded-xl p-2 bg-gray-50/50 outline-none transition-all focus:bg-white focus:border-emerald-500">
+              <input
+                id="password"
+                type={showPasswrd ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="flex-1 outline-none"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPasswrd((prev) => !prev)}
+              >
+                {showPasswrd ? <Eye size={20} /> : <EyeOff size={20} />}
+              </button>
+            </div>
             <div className="h-6 mt-1">
               {passwordError && (
                 <span className="text-red-600 text-sm">{passwordError}</span>

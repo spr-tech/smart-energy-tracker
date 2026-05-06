@@ -1,7 +1,7 @@
 
 const Analytics = () => {
   return (
-    <div>
+    <div className="">
       
     </div>
   )
