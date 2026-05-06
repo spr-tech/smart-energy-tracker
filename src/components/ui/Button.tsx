@@ -6,7 +6,7 @@ type ButtonProps = {
 const Button = ({ children, type = "default" }: ButtonProps) => {
   const buttonStyles = {
     default: "",
-    signup: "text-emerald-700 font-semibold",
+    signup: "text-emerald-700 font-semi",
     signin:
       "bg-emerald-500 text-white text-center p-3 rounded-md text-md hover:bg-emerald-300",
   };

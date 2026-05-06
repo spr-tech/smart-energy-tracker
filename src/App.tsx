@@ -7,6 +7,7 @@ import Readings from "./pages/Readings";
 import Analytics from "./pages/Analytics";
 import Goals from "./pages/Goals";
 import Settings from "./pages/Settings";
+import AuthGuard from "./components/AuthGuard";
 
 const App = () => {
   return (
@@ -16,12 +17,15 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
 
-        <Route path="/" element={<AppLayout />}>
-          <Route index element={<DashBoard />} />
-          <Route path="readings" element={<Readings />} />
-          <Route path="analytics" element={<Analytics />} />
-          <Route path="goals" element={<Goals />} />
-          <Route path="settings" element={<Settings />} />
+        {/* pages */}
+        <Route element={<AuthGuard />}>
+          <Route path="/" element={<AppLayout />}>
+            <Route index element={<DashBoard />} />
+            <Route path="readings" element={<Readings />} />
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="goals" element={<Goals />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
         </Route>
       </Routes>
     </div>
