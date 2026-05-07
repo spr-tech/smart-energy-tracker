@@ -1,21 +1,28 @@
 type ButtonProps = {
   children: React.ReactNode;
-  type?: "default" | "signup" | "signin" | "logout";
+  variant?: "default" | "sign" | "logout";
+  type?: "button" | "submit" | "reset";
   onClick?: () => void;
+  className?: string;
 };
 
-const Button = ({ children, type = "default", onClick }: ButtonProps) => {
+const Button = ({
+  children,
+  variant = "default",
+  type = "button",
+  onClick,
+  className = "",
+}: ButtonProps) => {
   const buttonStyles = {
     default: "",
-    signup: "text-emerald-700 font-semi ",
-    signin:
-      "bg-emerald-500 text-white text-center p-3 rounded-md text-md hover:bg-emerald-300",
+    sign: "bg-button text-white text-center p-3 rounded-md text-md hover:bg-emerald-400",
     logout:
       " flex gap-2 text-black font-semi hover:underline font-semibold text-lg",
   };
   return (
     <button
-      className={`cursor-pointer  ${buttonStyles[type]}`}
+      type={type}
+      className={`cursor-pointer  ${buttonStyles[variant]} ${className}`}
       onClick={onClick}
     >
       {children}

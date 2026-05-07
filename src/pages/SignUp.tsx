@@ -184,7 +184,9 @@ const SignUp = () => {
             </div>
           </div>
 
-          <Button type="signin">Sign up</Button>
+          <Button variant="sign" type="submit">
+            Sign up
+          </Button>
         </form>
 
         <div className=" flex gap-2 justify-center ">

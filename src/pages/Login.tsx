@@ -1,6 +1,6 @@
 import { Zap, Eye, EyeOff } from "lucide-react";
 import Button from "../components/ui/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const Login = () => {
@@ -23,6 +23,10 @@ const Login = () => {
     }
   }, [emailError, passwordError]);
 
+  const isLoggedin = localStorage.getItem("token");
+  if (isLoggedin) {
+    return <Navigate to="/" replace />;
+  }
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -35,6 +39,7 @@ const Login = () => {
     if (!email.trim()) {
       setEmailError("Email is required");
       isValid = false;
+      alert("fhf");
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
@@ -64,7 +69,7 @@ const Login = () => {
       {/* Icon  */}
       <div className="flex flex-col gap-3 items-center mb-6 text-center">
         <span className="bg-emerald-200/30 p-3 rounded-xl">
-          <Zap size={50} className="text-emerald-600" />
+          <Zap size={50} className="text-button" />
         </span>
         <h1 className="text-3xl font-semibold text-gray-800">EnergyTrack</h1>
         <p className="text-gray-500 text-lg">
@@ -135,12 +140,12 @@ const Login = () => {
                 className="flex-1 outline-none"
               />
 
-              <button
+              <Button
                 type="button"
                 onClick={() => setShowPasswrd((prev) => !prev)}
               >
                 {showPasswrd ? <Eye size={20} /> : <EyeOff size={20} />}
-              </button>
+              </Button>
             </div>
             <div className="h-6 mt-1">
               {passwordError && (
@@ -150,7 +155,9 @@ const Login = () => {
           </div>
 
           <div className="mt-4">
-            <Button type="signin">Sign in</Button>
+            <Button variant="sign" type="submit" className="bg-button">
+              Sign in
+            </Button>
           </div>
         </form>
 

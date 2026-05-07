@@ -1,0 +1,16 @@
+{
+  "readings": [
+    {
+      "id": "1",
+      "date": "2026-05-07",
+      "kwh": 90.0,
+      "notes": "Main building usage"
+    },
+    {
+      "id": "2",
+      "date": "2026-05-05",
+      "kwh": 8.6,
+      "notes": "-"
+    }
+  ]
+}
