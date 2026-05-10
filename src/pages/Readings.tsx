@@ -1,10 +1,16 @@
 import Button from "../components/ui/Button";
 import { Search } from "lucide-react";
+import type { Reading } from "../type/types";
+import ReadingsTable from "../components/readingsInfo/ReadingsTable";
 
-const Readings = () => {
+type ReadingsProp = {
+  items: Reading[];
+};
+
+const Readings = ({ items }: ReadingsProp) => {
   return (
-    <div className="">
-      <div className="p-7 flex flex-col gap-8 md:px-26 md:py-10 ">
+    <div className="md:px-26 md:py-10 flex flex-col gap-10 ">
+      <div className="p-7 md:p-0 flex flex-col gap-8 ">
         <header className="flex justify-between items-center">
           <div className="flex flex-col gap-2">
             <h1 className="font-bold text-[2.6rem]">Readings</h1>
@@ -39,7 +45,9 @@ const Readings = () => {
       </div>
 
       {/* content */}
-      <section></section>
+      <section className="overflow-y-auto border border-slate-300 rounded-xl w-full">
+        <ReadingsTable items={items} />
+      </section>
     </div>
   );
 };

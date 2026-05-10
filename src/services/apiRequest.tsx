@@ -1,9 +1,9 @@
-type apiResponseProps = {
+type apiRequestProps = {
   url?: string;
   optObj?: RequestInit | null;
 };
 
-const apiResponse = async ({ url = "", optObj = null }: apiResponseProps) => {
+const apiRequest = async ({ url = "", optObj = null }: apiRequestProps) => {
   try {
     const response = await fetch(url, optObj || undefined);
     if (!response.ok) throw new Error("unable to connect with the server");
@@ -14,4 +14,4 @@ const apiResponse = async ({ url = "", optObj = null }: apiResponseProps) => {
   }
 };
 
-export default apiResponse;
+export default apiRequest;

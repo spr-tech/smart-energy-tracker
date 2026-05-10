@@ -7,6 +7,7 @@ import {
   Target,
   Settings,
   LogOut,
+  Plus,
 } from "lucide-react";
 import SidebarLinks from "./SidebarLinks";
 import { useState } from "react";
@@ -42,10 +43,20 @@ const AppLayout = () => {
         <div className="hidden md:block ">
           <hr className="border-gray-300/70" />
         </div>
-        
+
         {/* other sidebar */}
         <nav className="flex-1">
-          <div className="flex  justify-around p-3 border-t border-gray-300/70 md:flex-col md:gap-3 md:mx-2  md:border-t-0 ">
+          <div className="flex  justify-around p-3 border-t border-gray-300/70 md:flex-col md:gap-3 md:mx-2  md:border-t-0  md:items-stretch">
+            {/* Add button */}
+            <div className="hidden md:flex bg-button hover:bg-emerald-400 w-full items-center justify-center p-3 rounded-lg mt-4 mb-6">
+              <Button className="flex flex-1 justify-center items-center gap-3 text-white ">
+                <span className="rounded-full ring-2 ring-gray-200 p-1">
+                  {<Plus size={23} />}
+                </span>
+                <span>Add reading </span>
+              </Button>
+            </div>
+
             <SidebarLinks
               to="/"
               icon={<LayoutDashboard size={20} />}
