@@ -3,5 +3,5 @@ export type Reading = {
   date: string;
   kwh: number;
   cost: number;
-  p?: string;
+  states?: string;
 };

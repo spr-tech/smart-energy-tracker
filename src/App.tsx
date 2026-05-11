@@ -15,6 +15,7 @@ import axios from "axios";
 const App = () => {
   const [items, setItems] = useState<Reading[]>([]);
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<string | null>(null);
 
   const KEY = "RdUJ42M8x1jhc4W3lP6c2ytCxEAndo4SJ1cXTahK";
 
@@ -45,15 +46,16 @@ const App = () => {
         const formattedData: Reading[] = rawData.map((item: any) => ({
           id: crypto.randomUUID(),
           date: item.period,
-          kwh: Number(item.sales) * 1000,
+          kwh: item.sales,
           cost: item.price,
-          p: item.stateDescription || "No notes",.''
+          states: item.stateDescription,
         }));
 
         setItems(formattedData);
         // console.log("ITEMS:", formattedData);
 
         setFetchError(null);
+        setIsLoading();
       } catch (err) {
         if (err instanceof Error) {
           setFetchError(err.message);
@@ -74,7 +76,7 @@ const App = () => {
       {fetchError && (
         <p style={{ color: "red", textAlign: "center" }}>{fetchError}</p>
       )}
-      =
+
       <Routes>
         {/* Auth pages */}
         <Route path="/login" element={<Login />} />

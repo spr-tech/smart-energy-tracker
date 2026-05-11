@@ -1,5 +1,5 @@
 import Button from "../components/ui/Button";
-import { Search } from "lucide-react";
+import { Search, Download, Plus } from "lucide-react";
 import type { Reading } from "../type/types";
 import ReadingsTable from "../components/readingsInfo/ReadingsTable";
 
@@ -9,26 +9,38 @@ type ReadingsProp = {
 
 const Readings = ({ items }: ReadingsProp) => {
   return (
-    <div className="md:px-26 md:py-10 flex flex-col gap-10 ">
-      <div className="p-7 md:p-0 flex flex-col gap-8 ">
-        <header className="flex justify-between items-center">
-          <div className="flex flex-col gap-2">
-            <h1 className="font-bold text-[2.6rem]">Readings</h1>
+    <div className="px-5 py-4 md:px-26 md:py-10 flex flex-col gap-10 overflow-hidden">
+      <div className=" md:p-7  flex flex-col gap-8 ">
+        {/* the head text */}
+
+        <header className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
+          <div className="flex flex-col md:gap-2">
+            <h1 className="font-bold text-3xl md:text-[2.6rem]">Readings</h1>
             <span className="text-xl text-slate-500">
               Manage your daily energy logs.
             </span>
           </div>
 
-          <div>
-            <Button variant="sign" className="flex gap-7 items-center">
-              <span className="text-xl">+</span>
-              <span className="text-xl">Add</span>
+          {/* Button container */}
+          <div className="flex gap-2 justify-center">
+            <Button className="bg-mauve-300 rounded-lg w-40 h-8 flex justify-center items-center gap-3">
+              <span>
+                <Download size={15} />
+              </span>
+              <span>Export</span>
+            </Button>
+
+            <Button className="bg-button text-white flex justify-center gap-4 md:gap-7 items-center w-45 h-8 rounded-lg">
+              <span className="text-xl">
+                <Plus size={15} />
+              </span>
+              <span className=" md:text-xl">Add</span>
             </Button>
           </div>
         </header>
 
         {/* search item */}
-        <section className="w-120">
+        <section className="md:w-120">
           <form
             action=""
             className="flex rounded-xl gap-2 p-2 border border-gray-300 focus-within:border-emerald-500 shadow "
