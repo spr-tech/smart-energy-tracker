@@ -9,28 +9,32 @@ const ReadingsTable = ({ items }: ReadingsTableProp) => {
   return (
     <>
       {/* Mobile view */}
-      <div className="md:hidden">
+      <div className=" md:hidden bg-white ">
         {items.map((item) => (
-          <div className="">
-            {/* flex con for date and icon */}
+          <div className="ring ring-slate-200 p-6 flex flex-col gap-5">
+            {/* flex container for date and icon */}
             <div className="flex justify-between">
-              <h1>{item.date}</h1>
-              <span className="flex gap-2">
-                <Trash2 size={20} />
-                <Pencil size={20} />
+              <h1 className="text-xl font-semibold">{item.date}</h1>
+              <span className="flex gap-2 cursor-pointer">
+                <button className="text-slate-600 hover:text-blue-600 transition-colors">
+                  <Pencil size={20} />
+                </button>
+                <button className="text-red-500 hover:text-red-700 transition-colors">
+                  <Trash2 size={20} />
+                </button>
               </span>
             </div>
 
             {/* flex con for energy & cost */}
-            <div className="flex gap-4">
-              <div className="flex">
-                <span>Energy</span>
-                <span>{item.kwh}</span>
+            <div className="flex gap-4 justify-around">
+              <div className="flex flex-col gap-2">
+                <span className="text-lg text-slate-500">Energy</span>
+                <span className="font-semibold text-xl">{item.kwh} kwh</span>
               </div>
 
-              <div className="flex">
-                <span>cost </span>
-                <span>{item.cost}</span>
+              <div className="flex flex-col">
+                <span className="text-lg text-slate-500">cost </span>
+                <span className="font-semibold text-xl">${item.cost}</span>
               </div>
             </div>
           </div>
@@ -38,19 +42,16 @@ const ReadingsTable = ({ items }: ReadingsTableProp) => {
       </div>
 
       {/* Desktop view */}
-      <table className="hidden md:table md:w-full md:table-fixed border-collapse bg-white m-0 p-0">
+      <table className="hidden md:table  md:w-full md:table-fixed border-collapse bg-white m-0 p-0">
         <thead className="">
           <tr className="border-b border-b-slate-200 p-3 text-left text-xl">
             <th className="p-3 text-slate-400 font-semibold">Date</th>
             <th className="p-3 text-slate-400 font-semibold">Energy</th>
             <th className="p-3 text-slate-400 font-semibold">cost</th>
-            <th className="p-3 text-slate-400 font-semibold">Nptes</th>
-
-            {/* <div className="flex justify-end"> */}
-            <th className="p-3 text-slate-400 font-semibold text-center ">
+            <th className="p-3 text-slate-400 font-semibold">State</th>
+            <th className="p-3 text-slate-400 font-semibold text-right ">
               Actions
             </th>
-            {/* </div> */}
           </tr>
         </thead>
 
@@ -61,13 +62,23 @@ const ReadingsTable = ({ items }: ReadingsTableProp) => {
                 {item.date}
               </td>
               <td className="p-4 text-black text-lg font-semibold">
-                {item.kwh}
+                {item.kwh} kWh
               </td>
               <td className="p-4 text-black text-lg font-semibold">
-                {item.cost}
+                ${item.cost}
               </td>
               <td className="p-4 text-black text-lg font-semibold">
                 {item.states}
+              </td>
+              <td className="p-4 ">
+                <div className="flex items-center justify-end gap-3">
+                  <button className="text-slate-600 hover:text-blue-600 transition-colors">
+                    <Pencil size={20} />
+                  </button>
+                  <button className="text-red-500 hover:text-red-700 transition-colors">
+                    <Trash2 size={20} />
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

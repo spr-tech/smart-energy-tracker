@@ -15,7 +15,7 @@ import axios from "axios";
 const App = () => {
   const [items, setItems] = useState<Reading[]>([]);
   const [fetchError, setFetchError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const KEY = "RdUJ42M8x1jhc4W3lP6c2ytCxEAndo4SJ1cXTahK";
 
@@ -32,6 +32,8 @@ const App = () => {
 
   useEffect(() => {
     const fetchItems = async () => {
+      setIsLoading(true);
+
       try {
         const response = await axios.get(EIA_URL);
 
@@ -45,20 +47,26 @@ const App = () => {
 
         const formattedData: Reading[] = rawData.map((item: any) => ({
           id: crypto.randomUUID(),
-          date: item.period,
+          date: new Date(item.period).toLocaleDateString("en-US", {
+            month: "short",
+            year: "numeric",
+          }),
           kwh: item.sales,
           cost: item.price,
           states: item.stateDescription,
         }));
 
-        setItems(formattedData);
+        setTimeout(() => {
+          setItems(formattedData);
+          setIsLoading(false);
+        }, 2000);
         // console.log("ITEMS:", formattedData);
 
         setFetchError(null);
-        setIsLoading();
       } catch (err) {
         if (err instanceof Error) {
           setFetchError(err.message);
+          setIsLoading(false);
         } else {
           setFetchError("Unknown error occurred");
         }
@@ -86,7 +94,10 @@ const App = () => {
         <Route element={<AuthGuard />}>
           <Route path="/" element={<AppLayout />}>
             <Route index element={<DashBoard />} />
-            <Route path="readings" element={<Readings items={items} />} />
+            <Route
+              path="readings"
+              element={<Readings items={items} isLoading={isLoading} />}
+            />
             <Route path="analytics" element={<Analytics />} />
             <Route path="goals" element={<Goals />} />
             <Route path="settings" element={<Settings />} />
