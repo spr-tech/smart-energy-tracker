@@ -11,11 +11,18 @@ import AuthGuard from "./components/AuthGuard";
 import { useState, useEffect } from "react";
 import type { Reading } from "./type/types";
 import axios from "axios";
+import ReadingsTable from "./components/readingsInfo/ReadingsTable";
 
 const App = () => {
   const [items, setItems] = useState<Reading[]>([]);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [modalButton, setModalButton] = useState<boolean>(false);
+
+  const handleModalButton = () => {
+    setModalButton((prev) => !prev);
+  };
+  console.log("powe:", setModalButton);
 
   const KEY = "RdUJ42M8x1jhc4W3lP6c2ytCxEAndo4SJ1cXTahK";
 
@@ -92,11 +99,22 @@ const App = () => {
 
         {/* Protected pages */}
         <Route element={<AuthGuard />}>
-          <Route path="/" element={<AppLayout />}>
+          <Route
+            path="/"
+            element={<AppLayout handleOpen={handleModalButton} />}
+          >
             <Route index element={<DashBoard />} />
             <Route
               path="readings"
-              element={<Readings items={items} isLoading={isLoading} />}
+              element={
+                <Readings
+                  isLoading={isLoading}
+                  isOpen={modalButton}
+                  handleToggle={handleModalButton}
+                >
+                  <ReadingsTable items={items} />
+                </Readings>
+              }
             />
             <Route path="analytics" element={<Analytics />} />
             <Route path="goals" element={<Goals />} />

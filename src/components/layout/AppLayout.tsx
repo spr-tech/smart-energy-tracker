@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
 
-const AppLayout = () => {
+const AppLayout = ({ handleOpen }: { handleOpen: () => void }) => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState<string | null>(() =>
     localStorage.getItem("loggedEmail"),
@@ -49,7 +49,10 @@ const AppLayout = () => {
           <div className="flex justify-around gap-4 p-3 border-t border-gray-300/70 md:flex-col md:gap-3 md:mx-2 md:border-t-0  md:items-stretch">
             {/* Add button container */}
             <div className="hidden md:flex bg-button hover:bg-emerald-400 w-full items-center justify-center p-3 rounded-lg mt-4 mb-6">
-              <Button className="flex flex-1 justify-center items-center gap-3 text-white ">
+              <Button
+                className="flex flex-1 justify-center items-center gap-3 text-white"
+                onClick={handleOpen}
+              >
                 <span className="rounded-full ring-2 ring-gray-200 p-1">
                   {<Plus size={23} />}
                 </span>

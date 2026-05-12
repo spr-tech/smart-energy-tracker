@@ -11,10 +11,10 @@ const ReadingsTable = ({ items }: ReadingsTableProp) => {
       {/* Mobile view */}
       <div className=" md:hidden bg-white ">
         {items.map((item) => (
-          <div className="ring ring-slate-200 p-6 flex flex-col gap-5">
+          <div className="ring ring-slate-200 p-3 flex flex-col gap-5">
             {/* flex container for date and icon */}
             <div className="flex justify-between">
-              <h1 className="text-xl font-semibold">{item.date}</h1>
+              <h1 className="sm:text-xl font-semibold">{item.date}</h1>
               <span className="flex gap-2 cursor-pointer">
                 <button className="text-slate-600 hover:text-blue-600 transition-colors">
                   <Pencil size={20} />
@@ -28,13 +28,13 @@ const ReadingsTable = ({ items }: ReadingsTableProp) => {
             {/* flex con for energy & cost */}
             <div className="flex gap-4 justify-around">
               <div className="flex flex-col gap-2">
-                <span className="text-lg text-slate-500">Energy</span>
-                <span className="font-semibold text-xl">{item.kwh} kwh</span>
+                <span className="sm:text-lg text-slate-500">Energy</span>
+                <span className="sm:font-semibold text-xl">{item.kwh} kwh</span>
               </div>
 
               <div className="flex flex-col">
                 <span className="text-lg text-slate-500">cost </span>
-                <span className="font-semibold text-xl">${item.cost}</span>
+                <span className=" sm:font-semibold text-xl">${item.cost}</span>
               </div>
             </div>
           </div>
