@@ -116,7 +116,7 @@ const SignUp = () => {
               focus:outline-4 focus:outline-emerald-500/20 placeholder:text-xl "
             />
 
-            <div className="h-3  ">
+            <div className="h-3 ">
               {nameError && (
                 <span className="text-red-600 text-md">{nameError}</span>
               )}

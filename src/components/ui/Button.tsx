@@ -11,7 +11,7 @@ const Button = ({
   variant = "default",
   type = "button",
   onClick,
-  className = "",
+  className = ""
 }: ButtonProps) => {
   const buttonStyles = {
     default: "",

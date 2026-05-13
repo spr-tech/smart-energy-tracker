@@ -14,7 +14,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
 
-const AppLayout = ({ handleOpen }: { handleOpen: () => void }) => {
+type AppLayoutProps = {
+  handleOpen: () => void;
+  errorMessage: string | null;
+};
+
+const AppLayout = ({ handleOpen, errorMessage }: AppLayoutProps) => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState<string | null>(() =>
     localStorage.getItem("loggedEmail"),
@@ -28,7 +33,12 @@ const AppLayout = ({ handleOpen }: { handleOpen: () => void }) => {
   return (
     <div className="flex flex-col md:flex-row h-screen ">
       <main className="flex-1 order-1 md:order-2 bg-[#f7fafc] overflow-y-auto">
-        <Outlet />
+        {errorMessage && (
+          <p className="flex justify-center items-center h-screen text-red-400  font-bold">
+            {errorMessage}
+          </p>
+        )}
+        {!errorMessage && <Outlet />}
       </main>
 
       <aside className="md:flex flex-col bg-[#ffffff] order-2 md:order-1 md:border-r md:border-gray-300/70 md:min-w-80">

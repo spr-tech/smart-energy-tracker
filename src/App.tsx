@@ -23,48 +23,18 @@ const App = () => {
     setModalButton((prev) => !prev);
   };
   console.log("powe:", setModalButton);
-
-  const KEY = "RdUJ42M8x1jhc4W3lP6c2ytCxEAndo4SJ1cXTahK";
-
-  // ⚠️ NOTE: This URL is still an EXAMPLE structure — adjust to real EIA endpoint if needed
-  const EIA_URL =
-    `https://api.eia.gov/v2/electricity/retail-sales/data/?api_key=${KEY}` +
-    `&data[]=price` +
-    `&data[]=sales` +
-    `&facets[sectorid][]=RES` +
-    `&frequency=monthly` +
-    `&sort[0][column]=period` +
-    `&sort[0][direction]=desc` +
-    `&length=100`;
+  const API_URL =
+    "https://6a0371192afe8349b4b5376a.mockapi.io/api/energydata/energydata";
 
   useEffect(() => {
     const fetchItems = async () => {
       setIsLoading(true);
 
       try {
-        const response = await axios.get(EIA_URL);
-
-        console.log("RAW API RESPONSE:", response.data);
-        console.log("FULL RESPONSE:", response);
-        console.log("DATA ONLY:", response.data);
-
-        // ⚠️ Adjust depending on actual API response shape
-        const rawData = response.data?.response?.data || [];
-        console.log("raw:", rawData[0]);
-
-        const formattedData: Reading[] = rawData.map((item: any) => ({
-          id: crypto.randomUUID(),
-          date: new Date(item.period).toLocaleDateString("en-US", {
-            month: "short",
-            year: "numeric",
-          }),
-          kwh: item.sales,
-          cost: item.price,
-          states: item.stateDescription,
-        }));
+        const response = await axios.get(API_URL);
 
         setTimeout(() => {
-          setItems(formattedData);
+          setItems(response?.data || []);
           setIsLoading(false);
         }, 2000);
         // console.log("ITEMS:", formattedData);
@@ -83,14 +53,11 @@ const App = () => {
     };
 
     fetchItems();
-  }, [EIA_URL]);
+  }, []);
 
   return (
     <div>
       {/* Show error if exists */}
-      {fetchError && (
-        <p style={{ color: "red", textAlign: "center" }}>{fetchError}</p>
-      )}
 
       <Routes>
         {/* Auth pages */}
@@ -101,7 +68,12 @@ const App = () => {
         <Route element={<AuthGuard />}>
           <Route
             path="/"
-            element={<AppLayout handleOpen={handleModalButton} />}
+            element={
+              <AppLayout
+                handleOpen={handleModalButton}
+                errorMessage={fetchError}
+              />
+            }
           >
             <Route index element={<DashBoard />} />
             <Route
@@ -110,9 +82,16 @@ const App = () => {
                 <Readings
                   isLoading={isLoading}
                   isOpen={modalButton}
+                  setItems={setItems}
                   handleToggle={handleModalButton}
+                  closeModal={setModalButton}
+                  setErrorMessage={setFetchError}
                 >
-                  <ReadingsTable items={items} />
+                  <ReadingsTable
+                    items={items}
+                    setItems={setItems}
+                    setErrorMessage={setFetchError}
+                  />
                 </Readings>
               }
             />

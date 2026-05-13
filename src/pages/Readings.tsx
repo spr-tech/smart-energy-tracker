@@ -1,12 +1,18 @@
 import Button from "../components/ui/Button";
 import { Search, Download, Plus } from "lucide-react";
 import AddModal from "../components/readingsInfo/AddModal";
+import type { Reading } from "../type/types";
+import type { SetStateAction } from "react";
 
 type ReadingsProp = {
   isLoading: boolean;
   children: React.ReactNode;
   isOpen: boolean;
+  setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
+
   handleToggle: () => void;
+  setItems: React.Dispatch<React.SetStateAction<Reading[]>>;
+  closeModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Readings = ({
@@ -14,6 +20,9 @@ const Readings = ({
   children,
   isOpen,
   handleToggle,
+  setItems,
+  closeModal,
+  setErrorMessage,
 }: ReadingsProp) => {
   return (
     <>
@@ -77,7 +86,16 @@ const Readings = ({
         </section>
       </div>
       {/* Add modal */}
-      <div>{isOpen && <AddModal handleClose={handleToggle} />}</div>
+      <div>
+        {isOpen && (
+          <AddModal
+            handleClose={handleToggle}
+            setItems={setItems}
+            closeModal={closeModal}
+            setErrorMessage={setErrorMessage}
+          />
+        )}
+      </div>
     </>
   );
 };
