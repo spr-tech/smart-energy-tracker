@@ -3,29 +3,39 @@ import type { Reading } from "../../type/types";
 import { Trash2, Pencil } from "lucide-react";
 import axios from "axios";
 import Button from "../ui/Button";
+import { useState } from "react";
 
 type ReadingsTableProp = {
   items: Reading[];
   setItems: React.Dispatch<SetStateAction<Reading[]>>;
   setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
+  apiurl: string;
+  handleEdit: (item: Reading) => void;
 };
 
 const ReadingsTable = ({
   items,
   setItems,
   setErrorMessage,
+  apiurl,
+  handleEdit,
 }: ReadingsTableProp) => {
-  const API_URL =
-    "https://6a0371192afe8349b4b5376a.mockapi.io/api/energydata/energydata";
+  const [disableDeleteButton, setDisableDeleteButton] = useState<string | null>(
+    null,
+  );
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      setDisableDeleteButton(id);
+
+      await axios.delete(`${apiurl}/${id}`);
       setItems((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       if (err instanceof Error) {
         return setErrorMessage(err.message);
       }
+    } finally {
+      setDisableDeleteButton(null);
     }
   };
 
@@ -85,7 +95,11 @@ const ReadingsTable = ({
           {items.map((item) => (
             <tr key={item.id} className="border-b border-b-slate-200  ">
               <td className="p-4 text-black text-lg font-semibold">
-                {item.date}
+                {new Date(item.date).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
               </td>
               <td className="p-4 text-black text-lg font-semibold">
                 {item.kwh} kWh
@@ -98,11 +112,15 @@ const ReadingsTable = ({
               </td>
               <td className="p-4 ">
                 <div className="flex items-center justify-end gap-3">
-                  <Button className="text-slate-600 hover:text-blue-600 transition-colors">
+                  <Button
+                    className="text-slate-600 hover:text-blue-600 transition-colors"
+                    onClick={() => handleEdit(item)}
+                  >
                     <Pencil size={20} />
                   </Button>
                   <Button
                     className="text-red-500 hover:text-red-700 transition-colors"
+                    disabled={disableDeleteButton === item.id}
                     onClick={() => handleDelete(item.id)}
                   >
                     <Trash2 size={20} />

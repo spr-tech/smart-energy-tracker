@@ -11,7 +11,7 @@ import AuthGuard from "./components/AuthGuard";
 import { useState, useEffect } from "react";
 import type { Reading } from "./type/types";
 import axios from "axios";
-import ReadingsTable from "./components/readingsInfo/ReadingsTable";
+// import ReadingsTable from "./compnents/readingsInfo/ReadingsTable";
 
 const App = () => {
   const [items, setItems] = useState<Reading[]>([]);
@@ -22,7 +22,7 @@ const App = () => {
   const handleModalButton = () => {
     setModalButton((prev) => !prev);
   };
-  console.log("powe:", setModalButton);
+
   const API_URL =
     "https://6a0371192afe8349b4b5376a.mockapi.io/api/energydata/energydata";
 
@@ -55,6 +55,8 @@ const App = () => {
     fetchItems();
   }, []);
 
+
+
   return (
     <div>
       {/* Show error if exists */}
@@ -80,19 +82,15 @@ const App = () => {
               path="readings"
               element={
                 <Readings
+                  items={items}
+                  apiurl={API_URL}
                   isLoading={isLoading}
-                  isOpen={modalButton}
+                  modalButton={modalButton}
                   setItems={setItems}
                   handleToggle={handleModalButton}
-                  closeModal={setModalButton}
+                  setModalButton={setModalButton}
                   setErrorMessage={setFetchError}
-                >
-                  <ReadingsTable
-                    items={items}
-                    setItems={setItems}
-                    setErrorMessage={setFetchError}
-                  />
-                </Readings>
+                />
               }
             />
             <Route path="analytics" element={<Analytics />} />

@@ -4,6 +4,7 @@ type ButtonProps = {
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
   className?: string;
+  disabled?: boolean;
 };
 
 const Button = ({
@@ -11,7 +12,8 @@ const Button = ({
   variant = "default",
   type = "button",
   onClick,
-  className = ""
+  className = "",
+  disabled = false,
 }: ButtonProps) => {
   const buttonStyles = {
     default: "",
@@ -22,7 +24,8 @@ const Button = ({
   return (
     <button
       type={type}
-      className={`cursor-pointer  ${buttonStyles[variant]} ${className}`}
+      disabled={disabled}
+      className={`cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed  ${buttonStyles[variant]} ${className}`}
       onClick={onClick}
     >
       {children}

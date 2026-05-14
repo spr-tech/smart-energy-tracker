@@ -1,7 +1,7 @@
 import { Zap, X } from "lucide-react";
 import Button from "../ui/Button";
 import type { Reading } from "../../type/types";
-import { useState, type SetStateAction } from "react";
+import { type SetStateAction } from "react";
 import axios from "axios";
 
 type AddModalProps = {
@@ -9,6 +9,15 @@ type AddModalProps = {
   setItems: React.Dispatch<React.SetStateAction<Reading[]>>;
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
+  apiurl: string;
+  date: string;
+  setDate: React.Dispatch<SetStateAction<string>>;
+  energy: number | "";
+  setEnergy: React.Dispatch<SetStateAction<number | "">>;
+  cost: number | "";
+  setCost: React.Dispatch<SetStateAction<number | "">>;
+  states: string;
+  setStates: React.Dispatch<SetStateAction<string>>;
 };
 
 const AddModal = ({
@@ -16,14 +25,16 @@ const AddModal = ({
   setItems,
   closeModal,
   setErrorMessage,
+  apiurl,
+  date,
+  setDate,
+  energy,
+  setEnergy,
+  cost,
+  setCost,
+  states,
+  setStates,
 }: AddModalProps) => {
-  const [date, setDate] = useState<string>("");
-  const [energy, setEnergy] = useState<number | "">("");
-  const [cost, setCost] = useState<number | "">("");
-  const [states, setStates] = useState<string>("");
-  const API_Url =
-    "https://6a0371192afe8349b4b5376a.mockapi.io/api/energydata/energydata";
-
   const addReading = async () => {
     const newReading: Reading = {
       id: crypto.randomUUID(),
@@ -34,7 +45,7 @@ const AddModal = ({
     };
 
     try {
-      const response = await axios.post(API_Url, newReading);
+      const response = await axios.post(apiurl, newReading);
       setItems((prev) => [response.data, ...prev]);
 
       setDate("");
@@ -48,6 +59,42 @@ const AddModal = ({
       }
     }
   };
+
+   const updateExistingReadings = async () => {
+    try {
+      if (!editingItem) return;
+
+      const updatedReading: Reading = {
+        ...editingItem,
+        date,
+        kwh: Number(energy),
+        cost: Number(cost),
+        states,
+      };
+
+      const response = await axios.put(
+        `${apiurl}/${editingItem.id}`,
+        updatedReading,
+      );
+
+      setItems((prev) =>
+        prev.map((item) => (item.id === editingItem.id ? response.data : item)),
+      );
+
+      //resetting form
+      setDate("");
+      setEnergy("");
+      setCost("");
+      setStates("");
+      setModalButton(false);
+      setEditingItem(null);
+    } catch (err) {
+      if (err instanceof Error) {
+        setErrorMessage(err.message);
+      }
+    }
+  };
+
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!date.trim() || !energy || !states.trim()) {

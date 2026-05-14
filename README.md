@@ -1,73 +1,96 @@
-# React + TypeScript + Vite
+# Energy Tracker App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern frontend energy consumption tracking application built with React, TypeScript, Tailwind CSS, Axios, and React Router.
 
-Currently, two official plugins are available:
+The app allows users to:
+- Track electricity/energy usage
+- Add new readings manually
+- Edit existing readings
+- Delete readings
+- View energy consumption data in a clean dashboard
+- Fetch external electricity data from APIs
+- Manage readings with a responsive UI
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+# Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Authentication UI
+- Login page
+- Signup page
+- Protected routes using AuthGuard
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Energy Readings Management
+- Add new energy readings
+- Edit readings
+- Delete readings
+- Real-time UI updates
+- Modal-based form system
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## API Integration
+- Fetch electricity retail sales data
+- Axios-based CRUD operations
+- External API support
+- MockAPI/JSON server support
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Dashboard
+- Analytics page
+- Goals page
+- Settings page
+- Readings overview
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Responsive Design
+- Mobile-friendly layout
+- Table view for desktop
+- Flexible card layout for smaller screens
+- Tailwind CSS styling
+
+---
+
+# Tech Stack
+
+- React
+- TypeScript
+- React Router DOM
+- Axios
+- Tailwind CSS
+- Lucide React Icons
+- MockAPI / JSON Server
+
+---
+
+# Project Structure
+
+src/
+│
+├── components/
+│   ├── layout/
+│   ├── readingsInfo/
+│   └── ui/
+│
+├── pages/
+│   ├── Dashboard.tsx
+│   ├── Readings.tsx
+│   ├── Analytics.tsx
+│   ├── Goals.tsx
+│   ├── Settings.tsx
+│   ├── Login.tsx
+│   └── SignUp.tsx
+│
+├── type/
+│   └── types.ts
+│
+├── App.tsx
+└── main.tsx
+
+---
+
+

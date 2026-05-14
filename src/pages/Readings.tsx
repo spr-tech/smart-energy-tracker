@@ -2,28 +2,58 @@ import Button from "../components/ui/Button";
 import { Search, Download, Plus } from "lucide-react";
 import AddModal from "../components/readingsInfo/AddModal";
 import type { Reading } from "../type/types";
+import ReadingsTable from "../components/readingsInfo/ReadingsTable";
 import type { SetStateAction } from "react";
+import { useState } from "react";
+import axios from "axios";
 
 type ReadingsProp = {
+  items: Reading[];
   isLoading: boolean;
-  children: React.ReactNode;
-  isOpen: boolean;
+  modalButton: boolean;
   setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
 
   handleToggle: () => void;
   setItems: React.Dispatch<React.SetStateAction<Reading[]>>;
-  closeModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalButton: React.Dispatch<React.SetStateAction<boolean>>;
+  apiurl: string;
 };
 
 const Readings = ({
+  items,
   isLoading,
-  children,
-  isOpen,
+  modalButton,
   handleToggle,
   setItems,
-  closeModal,
+  setModalButton,
   setErrorMessage,
+  apiurl,
 }: ReadingsProp) => {
+  const [date, setDate] = useState<string>("");
+  const [energy, setEnergy] = useState<number | "">("");
+  const [cost, setCost] = useState<number | "">("");
+  const [states, setStates] = useState<string>("");
+  const [editingItem, setEditingItem] = useState<Reading | null>(null);
+
+  const handleEditClick = (item: Reading) => {
+    setEditingItem(item);
+
+    // Prefill form inputs
+    setDate(item.date);
+    setEnergy(item.kwh);
+    setCost(item.cost);
+    setStates(item.states);
+
+    setModalButton(true);
+  };
+
+ 
+
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    updateExistingReadings();
+  };
+
   return (
     <>
       <div className="px-5 py-4 lg:px-20 md:py-10 flex flex-col gap-10 overflow-hidden">
@@ -64,6 +94,7 @@ const Readings = ({
             <form
               action=""
               className="flex rounded-xl gap-2 p-2 border border-gray-300 focus-within:border-emerald-500 shadow w-70 h-10 sm:w-90 "
+              onSubmit={handleSubmit}
             >
               <Search size={30} className="text-gray-300" />
               <input
@@ -81,18 +112,35 @@ const Readings = ({
           {isLoading ? (
             <p className="text-xl text-center p-10">Loading items...</p>
           ) : (
-            <div className="w-full">{children}</div>
+            <div className="w-full">
+              <ReadingsTable
+                items={items}
+                apiurl={apiurl}
+                setItems={setItems}
+                setErrorMessage={setErrorMessage}
+                handleEdit={handleEditClick}
+              />
+            </div>
           )}
         </section>
       </div>
       {/* Add modal */}
       <div>
-        {isOpen && (
+        {modalButton && (
           <AddModal
+            apiurl={apiurl}
             handleClose={handleToggle}
             setItems={setItems}
-            closeModal={closeModal}
+            closeModal={setModalButton}
             setErrorMessage={setErrorMessage}
+            date={date}
+            energy={energy}
+            cost={cost}
+            states={states}
+            setDate={setDate}
+            setEnergy={setEnergy}
+            setCost={setCost}
+            setStates={setStates}
           />
         )}
       </div>
