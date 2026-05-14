@@ -5,7 +5,7 @@ import { type SetStateAction } from "react";
 import axios from "axios";
 
 type AddModalProps = {
-  handleClose: () => void;
+  handleCloseModal: () => void;
   setItems: React.Dispatch<React.SetStateAction<Reading[]>>;
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
@@ -18,10 +18,11 @@ type AddModalProps = {
   setCost: React.Dispatch<SetStateAction<number | "">>;
   states: string;
   setStates: React.Dispatch<SetStateAction<string>>;
+  editReading: Reading | null;
 };
 
 const AddModal = ({
-  handleClose,
+  handleCloseModal,
   setItems,
   closeModal,
   setErrorMessage,
@@ -34,6 +35,7 @@ const AddModal = ({
   setCost,
   states,
   setStates,
+  editReading,
 }: AddModalProps) => {
   const addReading = async () => {
     const newReading: Reading = {
@@ -60,12 +62,12 @@ const AddModal = ({
     }
   };
 
-   const updateExistingReadings = async () => {
+  const updateReading = async () => {
     try {
-      if (!editingItem) return;
+      if (!editReading) return;
 
-      const updatedReading: Reading = {
-        ...editingItem,
+      const changedReading: Reading = {
+        ...editReading,
         date,
         kwh: Number(energy),
         cost: Number(cost),
@@ -73,21 +75,19 @@ const AddModal = ({
       };
 
       const response = await axios.put(
-        `${apiurl}/${editingItem.id}`,
-        updatedReading,
+        `${apiurl}/${editReading.id}`,
+        changedReading,
       );
 
       setItems((prev) =>
-        prev.map((item) => (item.id === editingItem.id ? response.data : item)),
+        prev.map((item) => (editReading.id === item.id ? response.data : item)),
       );
 
-      //resetting form
+      setCost("");
       setDate("");
       setEnergy("");
-      setCost("");
       setStates("");
-      setModalButton(false);
-      setEditingItem(null);
+      closeModal(false);
     } catch (err) {
       if (err instanceof Error) {
         setErrorMessage(err.message);
@@ -102,7 +102,11 @@ const AddModal = ({
       return;
     }
     try {
-      await addReading();
+      if (editReading) {
+        updateReading();
+      } else {
+        await addReading();
+      }
     } catch (err) {
       if (err instanceof Error) return setErrorMessage(err.message);
     }
@@ -120,7 +124,7 @@ const AddModal = ({
             <h2 className="text-xl font-bold text-slate-800">New Reading</h2>
           </div>
           <Button
-            onClick={handleClose}
+            onClick={handleCloseModal}
             className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors"
           >
             <X size={20} />

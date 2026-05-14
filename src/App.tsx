@@ -55,8 +55,6 @@ const App = () => {
     fetchItems();
   }, []);
 
-
-
   return (
     <div>
       {/* Show error if exists */}
@@ -72,7 +70,7 @@ const App = () => {
             path="/"
             element={
               <AppLayout
-                handleOpen={handleModalButton}
+                handleOpenModal={handleModalButton}
                 errorMessage={fetchError}
               />
             }
@@ -87,7 +85,7 @@ const App = () => {
                   isLoading={isLoading}
                   modalButton={modalButton}
                   setItems={setItems}
-                  handleToggle={handleModalButton}
+                  handleOpenModal={handleModalButton}
                   setModalButton={setModalButton}
                   setErrorMessage={setFetchError}
                 />

@@ -5,7 +5,7 @@ import type { Reading } from "../type/types";
 import ReadingsTable from "../components/readingsInfo/ReadingsTable";
 import type { SetStateAction } from "react";
 import { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 type ReadingsProp = {
   items: Reading[];
@@ -13,7 +13,7 @@ type ReadingsProp = {
   modalButton: boolean;
   setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
 
-  handleToggle: () => void;
+  handleOpenModal: () => void;
   setItems: React.Dispatch<React.SetStateAction<Reading[]>>;
   setModalButton: React.Dispatch<React.SetStateAction<boolean>>;
   apiurl: string;
@@ -23,7 +23,7 @@ const Readings = ({
   items,
   isLoading,
   modalButton,
-  handleToggle,
+  handleOpenModal,
   setItems,
   setModalButton,
   setErrorMessage,
@@ -33,10 +33,10 @@ const Readings = ({
   const [energy, setEnergy] = useState<number | "">("");
   const [cost, setCost] = useState<number | "">("");
   const [states, setStates] = useState<string>("");
-  const [editingItem, setEditingItem] = useState<Reading | null>(null);
+  const [editReading, setEditReading] = useState<Reading | null>(null);
 
   const handleEditClick = (item: Reading) => {
-    setEditingItem(item);
+    setEditReading(item);
 
     // Prefill form inputs
     setDate(item.date);
@@ -45,13 +45,6 @@ const Readings = ({
     setStates(item.states);
 
     setModalButton(true);
-  };
-
- 
-
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    updateExistingReadings();
   };
 
   return (
@@ -78,7 +71,7 @@ const Readings = ({
               </Button>
 
               <Button
-                onClick={handleToggle}
+                onClick={handleOpenModal}
                 className="bg-button hover:bg-green-300 text-white flex justify-center gap-4 md:gap-7 items-center w-45 h-8 sm:w-22 md:w-30 md:h-10 rounded-lg"
               >
                 <span className="text-xl">
@@ -94,7 +87,6 @@ const Readings = ({
             <form
               action=""
               className="flex rounded-xl gap-2 p-2 border border-gray-300 focus-within:border-emerald-500 shadow w-70 h-10 sm:w-90 "
-              onSubmit={handleSubmit}
             >
               <Search size={30} className="text-gray-300" />
               <input
@@ -129,7 +121,7 @@ const Readings = ({
         {modalButton && (
           <AddModal
             apiurl={apiurl}
-            handleClose={handleToggle}
+            handleCloseModal={handleOpenModal}
             setItems={setItems}
             closeModal={setModalButton}
             setErrorMessage={setErrorMessage}
@@ -141,6 +133,7 @@ const Readings = ({
             setEnergy={setEnergy}
             setCost={setCost}
             setStates={setStates}
+            editReading={editReading}
           />
         )}
       </div>

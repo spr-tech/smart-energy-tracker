@@ -15,11 +15,11 @@ import { useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
 
 type AppLayoutProps = {
-  handleOpen: () => void;
+  handleOpenModal: () => void;
   errorMessage: string | null;
 };
 
-const AppLayout = ({ handleOpen, errorMessage }: AppLayoutProps) => {
+const AppLayout = ({ handleOpenModal, errorMessage }: AppLayoutProps) => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState<string | null>(() =>
     localStorage.getItem("loggedEmail"),
@@ -61,7 +61,7 @@ const AppLayout = ({ handleOpen, errorMessage }: AppLayoutProps) => {
             <div className="hidden md:flex bg-button hover:bg-emerald-400 w-full items-center justify-center p-3 rounded-lg mt-4 mb-6">
               <Button
                 className="flex flex-1 justify-center items-center gap-3 text-white"
-                onClick={handleOpen}
+                onClick={handleOpenModal}
               >
                 <span className="rounded-full ring-2 ring-gray-200 p-1">
                   {<Plus size={23} />}
