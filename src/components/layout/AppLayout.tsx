@@ -27,7 +27,7 @@ const AppLayout = () => {
     throw new Error("fdgfgg");
   }
 
-  const { modalButton, fetchError, handleAddModalClick } = context;
+  const { fetchError, handleAddModalClick } = context;
 
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState<string | null>(() =>
@@ -42,12 +42,15 @@ const AppLayout = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen ">
       <main className="flex-1 order-1 md:order-2 bg-[#f7fafc] overflow-y-auto">
-        {modalButton && (
+        {fetchError ? (
           <p className="flex justify-center items-center h-screen text-red-400  font-bold">
             {fetchError}
           </p>
+        ) : (
+          <div className="px-5 py-7 lg:px-20">
+            <Outlet />
+          </div>
         )}
-        {!fetchError && <Outlet />}
       </main>
 
       <aside className="md:flex flex-col bg-[#ffffff] order-2 md:order-1 md:border-r md:border-gray-300/70 md:min-w-80">
@@ -70,7 +73,7 @@ const AppLayout = () => {
             <div className="hidden md:flex bg-button hover:bg-emerald-400 w-full items-center justify-center p-3 rounded-lg mt-4 mb-6">
               <Button
                 className="flex flex-1 justify-center items-center gap-3 text-white"
-                onClick={() => handleAddModalClick}
+                onClick={handleAddModalClick}
               >
                 <span className="rounded-full ring-2 ring-gray-200 p-1">
                   {<Plus size={23} />}
@@ -131,7 +134,10 @@ const AppLayout = () => {
           </div>
 
           <div>
-            <Button variant="logout" onClick={handleLogout}>
+            <Button
+              className="flex gap-2 text-black font-semi hover:underline font-semibold text-lg"
+              onClick={handleLogout}
+            >
               <LogOut size={20} />
               <span>Sign out</span>
             </Button>

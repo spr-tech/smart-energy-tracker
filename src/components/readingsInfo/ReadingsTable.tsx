@@ -25,12 +25,21 @@ const ReadingsTable = () => {
     null,
   );
 
+  const [confirmDeleteItem, setConfirmDeleteItem] = useState<string | null>(
+    null,
+  );
+
+  const handleDeleteConfirmation = (id: string) => {
+    setConfirmDeleteItem(id);
+  };
+
   const handleDelete = async (id: string) => {
     try {
       setDisableDeleteButton(id);
 
       await axios.delete(`${API_URL}/${id}`);
       setItems((prev) => prev.filter((item) => item.id !== id));
+      setConfirmDeleteItem(null);
     } catch (err) {
       if (err instanceof Error) {
         return setFetchError(err.message);
@@ -121,13 +130,40 @@ const ReadingsTable = () => {
                   </Button>
                   <Button
                     className="text-red-500 hover:text-red-700 transition-colors"
-                    disabled={disableDeleteButton === item.id}
-                    onClick={() => handleDelete(item.id)}
+                    onClick={() => handleDeleteConfirmation(item.id)}
                   >
                     <Trash2 size={20} />
                   </Button>
                 </div>
               </td>
+              {confirmDeleteItem === item.id && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+                  <div className="bg-white p-6 rounded-xl w-100">
+                    <h1 className="text-xl font-semibold">Delete Reading?</h1>
+
+                    <p className="mt-2 text-slate-500">
+                      Are you sure you want to delete this reading?
+                    </p>
+
+                    <div className="flex justify-end gap-3 mt-5">
+                      <Button
+                        className=" hover:underline"
+                        onClick={() => setConfirmDeleteItem(null)}
+                      >
+                        Cancel
+                      </Button>
+
+                      <Button
+                        className="bg-red-600 hover:bg-red-400  p-2 rounded-xl text-white"
+                        onClick={() => handleDelete(item.id)}
+                        disabled={disableDeleteButton === item.id}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </tr>
           ))}
         </tbody>

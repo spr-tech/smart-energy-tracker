@@ -160,8 +160,10 @@ const AddModal = () => {
             <h1 className="font-semibold text-2xl">
               {editReading ? "Edit Reading" : "Add Reading"}
             </h1>
-            <p className="text-slate-300">
-              Enter your energy consumption details below.
+            <p className="text-slate-500">
+              {editReading
+                ? " Change your energy consumption details below."
+                : " Enter your energy consumption details below."}
             </p>
           </div>
 
