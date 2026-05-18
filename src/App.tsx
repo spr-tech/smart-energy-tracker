@@ -4,27 +4,28 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import DashBoard from "./pages/DashBoard";
 import Readings from "./pages/Readings";
-import Analytics from "./pages/Analytics";
+import Tips from "./pages/Tips";
 import Goals from "./pages/Goals";
 import Settings from "./pages/Settings";
 import AuthGuard from "./components/AuthGuard";
-import { useState, useEffect } from "react";
-import type { Reading } from "./type/types";
+import { useContext, useEffect } from "react";
 import axios from "axios";
+import { ReadingContext } from "./context/ReadingsContext";
 // import ReadingsTable from "./compnents/readingsInfo/ReadingsTable";
 
 const App = () => {
-  const [items, setItems] = useState<Reading[]>([]);
-  const [fetchError, setFetchError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [modalButton, setModalButton] = useState<boolean>(false);
-
-  const handleModalButton = () => {
-    setModalButton((prev) => !prev);
-  };
-
-  const API_URL =
-    "https://6a0371192afe8349b4b5376a.mockapi.io/api/energydata/energydata";
+  const context = useContext(ReadingContext);
+  if (!context) {
+    throw new Error("ReadingContext must be used inside Provider");
+  }
+  const {
+    API_URL,
+    setItems,
+    // setModalButton,
+    // fetchError,
+    setFetchError,
+    setIsLoading,
+  } = context;
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -37,9 +38,9 @@ const App = () => {
           setItems(response?.data || []);
           setIsLoading(false);
         }, 2000);
-        // console.log("ITEMS:", formattedData);
+        // console.log("ITEMS:",   formattedData);
 
-        setFetchError(null);
+        setFetchError("");
       } catch (err) {
         if (err instanceof Error) {
           setFetchError(err.message);
@@ -55,6 +56,21 @@ const App = () => {
     fetchItems();
   }, []);
 
+  // const handleModalButton = () => {
+  //   setModalButton((prev) => !prev);
+  // };
+
+  // const handleAddClick = () => {
+  //   setEditReading(null);
+
+  //   setDate("");
+  //   setEnergy("");
+  //   setCost("");
+  //   setStates("");
+
+  //   handleOpenModal();
+  // };
+
   return (
     <div>
       {/* Show error if exists */}
@@ -66,32 +82,10 @@ const App = () => {
 
         {/* Protected pages */}
         <Route element={<AuthGuard />}>
-          <Route
-            path="/"
-            element={
-              <AppLayout
-                handleOpenModal={handleModalButton}
-                errorMessage={fetchError}
-              />
-            }
-          >
+          <Route path="/" element={<AppLayout />}>
             <Route index element={<DashBoard />} />
-            <Route
-              path="readings"
-              element={
-                <Readings
-                  items={items}
-                  apiurl={API_URL}
-                  isLoading={isLoading}
-                  modalButton={modalButton}
-                  setItems={setItems}
-                  handleOpenModal={handleModalButton}
-                  setModalButton={setModalButton}
-                  setErrorMessage={setFetchError}
-                />
-              }
-            />
-            <Route path="analytics" element={<Analytics />} />
+            <Route path="readings" element={<Readings />} />
+            <Route path="tips" element={<Tips />} />
             <Route path="goals" element={<Goals />} />
             <Route path="settings" element={<Settings />} />
           </Route>

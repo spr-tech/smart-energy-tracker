@@ -1,25 +1,26 @@
-import type { SetStateAction } from "react";
-import type { Reading } from "../../type/types";
 import { Trash2, Pencil } from "lucide-react";
 import axios from "axios";
 import Button from "../ui/Button";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { ReadingContext } from "../../context/ReadingsContext";
 
-type ReadingsTableProp = {
-  items: Reading[];
-  setItems: React.Dispatch<SetStateAction<Reading[]>>;
-  setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
-  apiurl: string;
-  handleEdit: (item: Reading) => void;
-};
+// type ReadingsTableProp = {
+//   items: Reading[];
+//   setItems: React.Dispatch<SetStateAction<Reading[]>>;
+//   setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
+//   apiurl: string;
+//   handleEdit: (item: Reading) => void;
+// };
 
-const ReadingsTable = ({
-  items,
-  setItems,
-  setErrorMessage,
-  apiurl,
-  handleEdit,
-}: ReadingsTableProp) => {
+const ReadingsTable = () => {
+  const context = useContext(ReadingContext);
+  if (!context) {
+    throw new Error("ddfdgfd");
+  }
+
+  const { items, setItems, setFetchError, API_URL, handleEditReadings } =
+    context;
+
   const [disableDeleteButton, setDisableDeleteButton] = useState<string | null>(
     null,
   );
@@ -28,11 +29,11 @@ const ReadingsTable = ({
     try {
       setDisableDeleteButton(id);
 
-      await axios.delete(`${apiurl}/${id}`);
+      await axios.delete(`${API_URL}/${id}`);
       setItems((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       if (err instanceof Error) {
-        return setErrorMessage(err.message);
+        return setFetchError(err.message);
       }
     } finally {
       setDisableDeleteButton(null);
@@ -114,7 +115,7 @@ const ReadingsTable = ({
                 <div className="flex items-center justify-end gap-3">
                   <Button
                     className="text-slate-600 hover:text-blue-600 transition-colors"
-                    onClick={() => handleEdit(item)}
+                    onClick={() => handleEditReadings(item)}
                   >
                     <Pencil size={20} />
                   </Button>

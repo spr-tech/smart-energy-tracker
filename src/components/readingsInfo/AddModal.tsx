@@ -1,42 +1,53 @@
 import { Zap, X } from "lucide-react";
 import Button from "../ui/Button";
 import type { Reading } from "../../type/types";
-import { type SetStateAction } from "react";
+// import { type SetStateAction } from "react";
+import { useContext } from "react";
+import { ReadingContext } from "../../context/ReadingsContext";
 import axios from "axios";
 
-type AddModalProps = {
-  handleCloseModal: () => void;
-  setItems: React.Dispatch<React.SetStateAction<Reading[]>>;
-  closeModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
-  apiurl: string;
-  date: string;
-  setDate: React.Dispatch<SetStateAction<string>>;
-  energy: number | "";
-  setEnergy: React.Dispatch<SetStateAction<number | "">>;
-  cost: number | "";
-  setCost: React.Dispatch<SetStateAction<number | "">>;
-  states: string;
-  setStates: React.Dispatch<SetStateAction<string>>;
-  editReading: Reading | null;
-};
+// type AddModalProps = {
+//   handleCloseModal: () => void;
+//   setItems: React.Dispatch<React.SetStateAction<Reading[]>>;
+//   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
+//   setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
+//   apiurl: string;
+//   date: string;
+//   setDate: React.Dispatch<SetStateAction<string>>;
+//   energy: number | "";
+//   setEnergy: React.Dispatch<SetStateAction<number | "">>;
+//   cost: number | "";
+//   setCost: React.Dispatch<SetStateAction<number | "">>;
+//   states: string;
+//   setStates: React.Dispatch<SetStateAction<string>>;
+//   editReading: Reading | null;
+//   setEditReading: React.Dispatch<SetStateAction<Reading | null>>;
+// };
 
-const AddModal = ({
-  handleCloseModal,
-  setItems,
-  closeModal,
-  setErrorMessage,
-  apiurl,
-  date,
-  setDate,
-  energy,
-  setEnergy,
-  cost,
-  setCost,
-  states,
-  setStates,
-  editReading,
-}: AddModalProps) => {
+const AddModal = () => {
+  const context = useContext(ReadingContext);
+  if (!context) {
+    throw new Error("dhf");
+  }
+
+  const {
+    API_URL,
+    setItems,
+    date,
+    setDate,
+    energy,
+    setEnergy,
+    cost,
+    setCost,
+    states,
+    setStates,
+    editReading,
+    setEditReading,
+    setModalButton,
+    // fetchError
+    setFetchError,
+  } = context;
+
   const addReading = async () => {
     const newReading: Reading = {
       id: crypto.randomUUID(),
@@ -47,17 +58,19 @@ const AddModal = ({
     };
 
     try {
-      const response = await axios.post(apiurl, newReading);
+      const response = await axios.post(API_URL, newReading);
       setItems((prev) => [response.data, ...prev]);
 
       setDate("");
       setEnergy("");
       setCost("");
       setStates("");
-      closeModal(false);
+      setModalButton(false);
+
+      setEditReading(null);
     } catch (err) {
       if (err instanceof Error) {
-        setErrorMessage(err.message);
+        setFetchError(err.message);
       }
     }
   };
@@ -75,7 +88,7 @@ const AddModal = ({
       };
 
       const response = await axios.put(
-        `${apiurl}/${editReading.id}`,
+        `${API_URL}/${editReading.id}`,
         changedReading,
       );
 
@@ -87,10 +100,10 @@ const AddModal = ({
       setDate("");
       setEnergy("");
       setStates("");
-      closeModal(false);
+      setModalButton(false);
     } catch (err) {
       if (err instanceof Error) {
-        setErrorMessage(err.message);
+        return setFetchError(err.message);
       }
     }
   };
@@ -103,12 +116,12 @@ const AddModal = ({
     }
     try {
       if (editReading) {
-        updateReading();
+        await updateReading();
       } else {
         await addReading();
       }
     } catch (err) {
-      if (err instanceof Error) return setErrorMessage(err.message);
+      if (err instanceof Error) return setFetchError(err.message);
     }
   };
 
@@ -121,10 +134,18 @@ const AddModal = ({
             <div className="p-2 bg-emerald-100 rounded-xl text-emerald-600">
               <Zap size={20} fill="currentColor" />
             </div>
-            <h2 className="text-xl font-bold text-slate-800">New Reading</h2>
+            <h2
+              className={
+                editReading
+                  ? "hidden"
+                  : "block text-xl font-bold text-slate-800"
+              }
+            >
+              New Reading
+            </h2>
           </div>
           <Button
-            onClick={handleCloseModal}
+            onClick={() => setModalButton((prev) => !prev)}
             className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors"
           >
             <X size={20} />
@@ -136,7 +157,9 @@ const AddModal = ({
           onSubmit={handleSubmit}
         >
           <div className="text-center">
-            <h1 className="font-semibold text-2xl">Add Reading</h1>
+            <h1 className="font-semibold text-2xl">
+              {editReading ? "Edit Reading" : "Add Reading"}
+            </h1>
             <p className="text-slate-300">
               Enter your energy consumption details below.
             </p>
@@ -199,7 +222,7 @@ const AddModal = ({
 
           <div className="text-right">
             <Button variant="sign" type="submit" className="font-semibold">
-              Add Readings
+              {editReading ? "Update Readiings" : "Add Readings"}
             </Button>
           </div>
         </form>
