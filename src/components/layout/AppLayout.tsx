@@ -47,7 +47,7 @@ const AppLayout = () => {
             {fetchError}
           </p>
         ) : (
-          <div className="px-5 py-7 lg:px-20">
+          <div className="p-3 md:px-5 md:py-7  mx-auto max-w-6xl">
             <Outlet />
           </div>
         )}

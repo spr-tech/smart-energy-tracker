@@ -39,7 +39,7 @@ const Readings = () =>
 
     return (
       <>
-        <div className=" md:py-10 flex flex-col gap-10 overflow-hidden">
+        <div className="  flex flex-col gap-10 overflow-hidden">
           <div className="flex flex-col gap-8 ">
             {/* the head text */}
 
