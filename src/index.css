@@ -3,7 +3,7 @@
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  /* --breakpoint-md: 880px; */
+  --breakpoint-md: 850px;
   --border-width-thin: 0.5px;
   --color-button: #21c45d;
 }
