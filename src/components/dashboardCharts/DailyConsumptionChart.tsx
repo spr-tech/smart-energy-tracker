@@ -13,7 +13,7 @@ import { useContext } from "react";
 const DailyConsumptionChart = () => {
   const context = useContext(ReadingContext);
   if (!context) {
-    throw new Error("dfdlfff");
+    throw new Error("No context found");
   }
 
   const { items } = context;
@@ -21,29 +21,64 @@ const DailyConsumptionChart = () => {
   const chartData = [...items].slice(0, 10).reverse();
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <LineChart
-        width={500}
-        height={400}
-        data={chartData}
-        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-      >
-        <CartesianGrid strokeDasharray="3 1" vertical={false} />
-        <XAxis
-          dataKey="date"
-          tickFormatter={(value) =>
-            new Date(value).toLocaleDateString("en-GB", {
-              month: "short",
-              year: "numeric",
-            })
-          }
-        />
-        <YAxis />
-        <Tooltip />
-        <Line type="monotone" dataKey="cost" fill="#888541" />
-        <Line type="monotone" dataKey="kwh" stroke="#8884d8" fill="#8884d8" />
-      </LineChart>
-    </ResponsiveContainer>
+    <div className=" flex flex-col bg-white shadow-md p-3 rounded-lg [&_.recharts-surface]:outline-none">
+      <div className="mb-5">
+        <h1 className="font-bold text-lg">Daily Consumption</h1>
+        <p className="text-sm text-slate-500">
+          Past 10 days of energy usage and cost incurred
+        </p>
+      </div>
+
+      <div className="text-xs min-h-70 w-full flex-1 ">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            width={500}
+            height={400}
+            data={chartData}
+            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          >
+            <CartesianGrid strokeDasharray="3 1" vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickFormatter={(value) =>
+                new Date(value).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "short",
+                })
+              }
+            />
+
+            <YAxis />
+
+            <Tooltip
+              labelFormatter={(label) =>
+                new Date(label).toLocaleDateString("en-US", {
+                  weekday: "short",
+                  day: "numeric",
+                  month: "short",
+                })
+              }
+            />
+
+            <Line
+              type="linear"
+              dataKey="cost"
+              strokeWidth={2}
+              dot={{ r: 4, fill: "#f97316" }}
+              stroke="#f97316"
+            />
+
+            <Line
+              type="monotone"
+              dataKey="kwh"
+              stroke="#21c45d"
+              strokeWidth={2}
+              fill="#21c45d"
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
   );
 };
 

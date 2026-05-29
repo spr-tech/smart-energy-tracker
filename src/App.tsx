@@ -11,6 +11,7 @@ import AuthGuard from "./components/AuthGuard";
 import { useContext, useEffect } from "react";
 import axios from "axios";
 import { ReadingContext } from "./context/ReadingsContext";
+import AddModal from "./components/readingsInfo/AddModal";
 // import ReadingsTable from "./compnents/readingsInfo/ReadingsTable";
 
 const App = () => {
@@ -18,14 +19,8 @@ const App = () => {
   if (!context) {
     throw new Error("ReadingContext must be used inside Provider");
   }
-  const {
-    API_URL,
-    setItems,
-    // setModalButton,
-    // fetchError,
-    setFetchError,
-    setIsLoading,
-  } = context;
+  const { API_URL, setItems, modalButton, setFetchError, setIsLoading } =
+    context;
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -72,8 +67,8 @@ const App = () => {
   // };
 
   return (
-    <div>
-      {/* Show error if exists */}
+    <div className="h-dvh overflow-hidden">
+      {modalButton && <AddModal />}
 
       <Routes>
         {/* Auth pages */}
@@ -81,6 +76,7 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
 
         {/* Protected pages */}
+
         <Route element={<AuthGuard />}>
           <Route path="/" element={<AppLayout />}>
             <Route index element={<DashBoard />} />

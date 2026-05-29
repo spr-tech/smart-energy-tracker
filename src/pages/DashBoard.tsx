@@ -2,73 +2,128 @@ import DailyConsumptionChart from "../components/dashboardCharts/DailyConsumptio
 import MonthlyConsumptionChart from "../components/dashboardCharts/MonthlyConsumptionChart";
 
 import { ReadingContext } from "../context/ReadingsContext";
-import { useContext } from "react";
-import { Zap } from "lucide-react";
+import { useContext, useMemo } from "react";
+import { Zap, Banknote, Hourglass } from "lucide-react";
+import WeeklyConsumptionChart from "../components/dashboardCharts/WeeklyConsumptionChart";
+import RecentReadings from "../components/dashboardCharts/RecentReadings";
 
 const DashBoard = () => {
   const context = useContext(ReadingContext);
+
   if (!context) {
     throw new Error("ReadingContext should be inside a provider");
   }
+
   const { items } = context;
 
-  const latest = items[0];
+  const latest = items?.[0];
+  const latestDate = latest ? new Date(latest.date) : null;
+  const latestMonth = latestDate?.getMonth();
+  const latestYear = latestDate?.getFullYear();
 
-  const latestDate = new Date(latest.date);
-  const latestMonth = latestDate.getMonth();
-  const latestYear = latestDate.getFullYear();
+  console.log(latestMonth);
 
-  const totalOfCurrentMonthEnergy = items.reduce((total, item) => {
-    const currentDate = new Date(item.date);
+  const {
+    totalOfCurrentMonthEnergy,
+    totalOfCurrentMonthCost,
+    dailyEnergyAverage,
+  } = useMemo(() => {
+    const totals = items.reduce(
+      (totalPerIteration, item) => {
+        const currentDate = new Date(item.date);
 
-    if (
-      currentDate.getMonth() === latestMonth &&
-      currentDate.getFullYear() === latestYear
-    ) {
-      return total + item.kwh;
-    }
+        if (
+          currentDate.getMonth() === latestMonth &&
+          currentDate.getFullYear() === latestYear
+        ) {
+          totalPerIteration.totalOfCurrentMonthEnergy += item.kwh;
+          totalPerIteration.totalOfCurrentMonthCost += item.cost;
+          totalPerIteration.totalTimesMonthOccurred += 1;
+        }
+        return totalPerIteration;
+      },
 
-    return total;
-  }, 0);
+      {
+        totalOfCurrentMonthEnergy: 0,
+        totalOfCurrentMonthCost: 0,
+        totalTimesMonthOccurred: 0,
+      },
+    );
+
+    const dailyEnergyAverage =
+      totals.totalTimesMonthOccurred > 0
+        ? totals.totalOfCurrentMonthEnergy / totals.totalTimesMonthOccurred
+        : 0;
+
+    return { ...totals, dailyEnergyAverage };
+  }, [items, latestMonth, latestYear]);
+
+  if (!items || items.length === 0) {
+    return (
+      <div className="p-5">
+        <p className="text-slate-600">Loading dashboard info...</p>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div className=" outline-0 border-none focus:outline-none focus:ring-0">
-        <header className="mb-5">
-          <h1 className="text-3xl font-semibold">DashBoard</h1>
-          <span className="text-slate-600">
-            Overview of your energy consumption
-          </span>
-        </header>
+    <div className="outline-none border-none">
+      <header className="mb-5">
+        <h1 className="text-3xl font-semibold">DashBoard</h1>
+        <span className="text-slate-600">
+          Overview of your energy consumption
+        </span>
+      </header>
 
-        <section className="md:grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
-          {/* //cards */}
-          <div className="bg-white shadow-md rounded-lg ">
-            <aside className="flex justify-between p-5">
-              <div className="flex flex-col gap-3">
-                <span>This month Energy</span>
-                <span className="text-2xl font-bold">
-                  {totalOfCurrentMonthEnergy} kWh
-                </span>
-              </div>
-              <div className="items-start">
-                <Zap />
-              </div>
-            </aside>
+      {/* Grid container with even card distribution */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {/* Card 1: Energy */}
+        <div className="bg-white shadow-md rounded-lg p-5 flex justify-between ">
+          <div className="flex flex-col gap-2">
+            <span className="text-slate-500 text-sm font-medium">
+              This Month Energy
+            </span>
+            <span className="text-2xl font-bold">
+              {totalOfCurrentMonthEnergy} kWh
+            </span>
           </div>
+          <Zap className="text-button" />
+        </div>
+        {/* Card 2: Cost */}
+        <div className="bg-white shadow-md rounded-lg p-5 flex justify-between ">
+          <div className="flex flex-col gap-2">
+            <span className="text-slate-500 text-sm font-medium">
+              This Month Cost
+            </span>
+            <span className="text-2xl font-bold">
+              ₦{totalOfCurrentMonthCost.toFixed(2)}
+            </span>
+          </div>
+          <Banknote className="text-button" />
+        </div>
+        {/* Card 3 : Daily average */}
+        <div className="bg-white shadow-md rounded-lg p-5 flex justify-between ">
+          <div className="flex flex-col gap-2">
+            <span className="text-slate-500 text-sm font-medium">
+              Daily average
+            </span>
+            <span className="text-2xl font-bold">
+              {dailyEnergyAverage.toFixed(2)} kWh
+            </span>
+          </div>
+          <Hourglass className="text-button" />
+        </div>
+        {/* Placeholder Card 4 */}
+        <div className="bg-white shadow-md rounded-lg p-5 min-h-25"></div>
+      </section>
 
-          <div className="bg-white shadow-md rounded-xl "></div>
-          <div className="bg-white shadow-md rounded-md"></div>
-          <div className="bg-white shadow-md rounded-md "></div>
-        </section>
-
-        <section>
-          <DailyConsumptionChart />
-
-          <MonthlyConsumptionChart />
-        </section>
-      </div>
-    </>
+      <section className="grid grid-cols-1 gap-4 md:grid-cols-2 md: md:gap-6 w-full">
+        <DailyConsumptionChart />
+        <WeeklyConsumptionChart />
+        <MonthlyConsumptionChart />
+        <RecentReadings />
+      </section>
+    </div>
   );
 };
 

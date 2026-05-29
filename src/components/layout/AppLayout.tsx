@@ -16,21 +16,15 @@ import Button from "../ui/Button";
 import { useContext } from "react";
 import { ReadingContext } from "../../context/ReadingsContext";
 
-// type AppLayoutProps = {
-//   handleOpenModal: () => void;
-//   errorMessage: string | null;
-// };
-
 const AppLayout = () => {
   const context = useContext(ReadingContext);
   if (!context) {
-    throw new Error("fdgfgg");
+    throw new Error("ReadingContext must be used inside a Provider");
   }
 
   const { fetchError, handleAddModalClick } = context;
-
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState<string | null>(() =>
+  const [userEmail] = useState<string | null>(() =>
     localStorage.getItem("loggedEmail"),
   );
 
@@ -40,45 +34,34 @@ const AppLayout = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen ">
-      <main className="flex-1 order-1 md:order-2 bg-[#f7fafc] overflow-y-auto">
-        {fetchError ? (
-          <p className="flex justify-center items-center h-screen text-red-400  font-bold">
-            {fetchError}
-          </p>
-        ) : (
-          <div className="p-3 md:px-5 md:py-7  mx-auto max-w-6xl">
-            <Outlet />
-          </div>
-        )}
-      </main>
-
-      <aside className="md:flex flex-col bg-[#ffffff] order-2 md:order-1 md:border-r md:border-gray-300/70 md:min-w-80">
-        {/* logo */}
-        <div className="hidden md:flex gap-2 items-center my-4 p-4 ">
+    <div className="flex flex-col md:flex-row h-screen w-full bg-[#f7fafc] overflow-hidden">
+      {/* SIDEBAR SIDE CONTENT */}
+      <aside className="fixed bottom-0 left-0 right-0 z-40 flex flex-col bg-white border-t border-gray-200 md:relative md:h-screen md:w-64 md:min-w-[16rem] md:border-t-0 md:border-r md:border-gray-300/70 shrink-0">
+        {/* LOGO */}
+        <div className="hidden md:flex gap-2 items-center my-4 p-4">
           <span className="bg-green-200 p-3 rounded-lg">
             <Zap size={20} color="green" />
           </span>
-          <h1 className="font-bold font-s text-2xl text-center">Energytrack</h1>
+          <h1 className="font-bold text-2xl text-center">Energytrack</h1>
         </div>
 
-        <div className="hidden md:block ">
+        <div className="hidden md:block">
           <hr className="border-gray-300/70" />
         </div>
 
-        {/* other sidebar */}
-        <nav className="flex-1">
-          <div className="flex justify-around gap-4 p-3 border-t border-gray-300/70 md:flex-col md:gap-3 md:mx-2 md:border-t-0  md:items-stretch">
-            {/* Add button container */}
-            <div className="hidden md:flex bg-button hover:bg-emerald-400 w-full items-center justify-center p-3 rounded-lg mt-4 mb-6">
+        {/* NAVIGATION LINKS */}
+        <nav className="flex-1 overflow-y-auto">
+          <div className="flex justify-around items-center p-2 md:flex-col md:gap-3 md:p-4 md:items-stretch">
+            {/* ADD ACTION BUTTON */}
+            <div className="hidden md:flex bg-button hover:bg-emerald-400 w-full items-center justify-center p-3 rounded-lg mb-4">
               <Button
                 className="flex flex-1 justify-center items-center gap-3 text-white"
                 onClick={handleAddModalClick}
               >
                 <span className="rounded-full ring-2 ring-gray-200 p-1">
-                  {<Plus size={23} />}
+                  <Plus size={23} />
                 </span>
-                <span>Add reading </span>
+                <span>Add reading</span>
               </Button>
             </div>
 
@@ -87,25 +70,17 @@ const AppLayout = () => {
               icon={<LayoutDashboard size={20} />}
               label="Dashboard"
             />
-
             <SidebarLinks
               to="/readings"
               icon={<Gauge size={20} />}
               label="Readings"
             />
-
             <SidebarLinks
               to="/goals"
               icon={<LineChart size={20} />}
               label="Goals"
             />
-
-            <SidebarLinks
-              to="/tips"
-              icon={<Target size={20} />}
-              label="Tips "
-            />
-
+            <SidebarLinks to="/tips" icon={<Target size={20} />} label="Tips" />
             <SidebarLinks
               to="/settings"
               icon={<Settings size={20} />}
@@ -114,36 +89,51 @@ const AppLayout = () => {
           </div>
         </nav>
 
-        <div className="hidden md:block ">
+        <div className="hidden md:block">
           <hr className="border-gray-300/70" />
         </div>
 
-        <footer className=" hidden md:flex p-7 flex-col gap-7 items-center">
-          <div className="flex gap-2 items-center">
-            <div>
-              <span className="h-9 w-9 rounded-full bg-emerald-100 xt-emerald-700 flex items-center justify-center font-bold shrink-0">
-                {userEmail ? userEmail[0].toUpperCase() : "U"}
-              </span>
-            </div>
+        {/* USER PROFILE & LOGOUT FOOTER */}
+        <footer className="hidden md:flex p-6 flex-col gap-6 items-center bg-white">
+          <div className="flex gap-3 items-center w-full px-2">
+            <span className="h-9 w-9 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold shrink-0">
+              {userEmail ? userEmail[0].toUpperCase() : "U"}
+            </span>
 
-            <div className="overflow-hidden w-30">
-              <p className="text-lg font-semibold text-gray-800 truncate">
-                {userEmail || "Guest User"}
+            <div className="overflow-hidden flex-1 min-w-0">
+              <p className="text-sm font-semibold text-gray-800 truncate">
+                {userEmail ? userEmail.split("@")[0] : "Guest User"}
               </p>
+              <span className="text-xs text-gray-400 block truncate">
+                {userEmail}
+              </span>
             </div>
           </div>
 
-          <div>
+          <div className="w-full">
             <Button
-              className="flex gap-2 text-black font-semi hover:underline font-semibold text-lg"
+              className="flex gap-2 items-center text-gray-700 font-semibold text-sm hover:text-red-500 hover:underline w-full justify-center"
               onClick={handleLogout}
             >
-              <LogOut size={20} />
+              <LogOut size={18} />
               <span>Sign out</span>
             </Button>
           </div>
         </footer>
       </aside>
+
+      {/* DASHBOARD MAIN CONTENT */}
+      <main className="flex-1 min-w-0 md:h-full overflow-y-auto pb-20 md:pb-0 ">
+        {fetchError ? (
+          <div className="flex justify-center items-center h-full text-red-500 font-bold p-4">
+            {fetchError}
+          </div>
+        ) : (
+          <div className="p-4 sm:p-6 md:p-8 lg:p-12 max-w-7xl mx-auto">
+            <Outlet />
+          </div>
+        )}
+      </main>
     </div>
   );
 };

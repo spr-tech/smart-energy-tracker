@@ -87,9 +87,8 @@ const ReadingsTable = () => {
         ))}
       </div>  */}
 
-      {/* Desktop view */}
-      <div className="overflow-x-auto"> 
-        <table className="min-w-full md:table  md:w-full md:table-fixed border-collapse bg-white m-0 p-0">
+      <div className="overflow-x-auto">
+        <table className="min-w-full md:table md:w-full md:table-fixed border-collapse bg-white m-0 p-0">
           <thead className="">
             <tr className="border-b border-b-slate-200 p-3 text-left text-xl">
               <th className="p-3 text-slate-400 font-semibold">Date</th>

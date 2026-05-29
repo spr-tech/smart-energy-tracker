@@ -45,7 +45,7 @@ const Readings = () =>
 
             <header className="flex flex-col justify-between gap-4 sm:flex-row sm:justify-between md:items-center">
               <div className="flex flex-col md:gap-2">
-                <h1 className="font-bold text-3xl md:text-[2.6rem]">
+                <h1 className="font-semibold text-3xl md:text-[2rem]">
                   Readings
                 </h1>
                 <span className="text-xl text-slate-500">
@@ -103,27 +103,7 @@ const Readings = () =>
           </section>
         </div>
         {/* Add modal */}
-        <div>
-          {modalButton && (
-            <AddModal
-            // apiurl={apiurl}
-            // handleCloseModal={handleOpenModal}
-            // setItems={setItems}
-            // closeModal={setModalButton}
-            // setErrorMessage={setErrorMessage}
-            // date={date}
-            // energy={energy}
-            // cost={cost}
-            // states={states}
-            // setDate={setDate}
-            // setEnergy={setEnergy}
-            // setCost={setCost}
-            // setStates={setStates}
-            // editReading={editReading}
-            // setEditReading={setEditReading}
-            />
-          )}
-        </div>
+        <div>{modalButton && <AddModal />}</div>
       </>
     );
   };

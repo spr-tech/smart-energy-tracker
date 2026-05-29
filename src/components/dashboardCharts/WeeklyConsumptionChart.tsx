@@ -11,62 +11,65 @@ import {
 import { ReadingContext } from "../../context/ReadingsContext";
 import { useContext, useMemo } from "react";
 
-const MonthlyConsumptionChart = () => {
-  // Take your MockAPI data and reverse it so it reads chronologically from left to right
+const WeeklyConsumptionChart = () => {
   const context = useContext(ReadingContext);
   if (!context) {
     throw new Error("No context found");
   }
 
   const { items } = context;
-  // const chartData = [...items].slice(0, 6).reverse();
 
-  const monthlyDataUsage = useMemo(() => {
+  const weeklyDataUsage = useMemo(() => {
     if (!items || items.length === 0) return [];
 
-    const totalPerIteration = items.reduce(
+    const totalPerWeek = items.reduce(
       (acc, item) => {
         const currentDate = new Date(item.date);
+        const dayOfWeek = currentDate.getDay();
 
-        const monthKey = currentDate.toLocaleDateString("en-US", {
+        const weekStart = new Date(currentDate);
+        weekStart.setDate(currentDate.getDate() - dayOfWeek);
+
+        const weekKey = weekStart.toLocaleDateString("en-US", {
           month: "short",
+          day: "numeric",
           year: "numeric",
         });
 
-        if (!acc[monthKey]) {
-          acc[monthKey] = { kwh: 0, cost: 0 };
+        if (!acc[weekKey]) {
+          acc[weekKey] = { kwh: 0, cost: 0 };
         }
 
-        acc[monthKey].kwh += item.kwh;
-        acc[monthKey].cost += item.cost;
+        acc[weekKey].kwh += item.kwh;
+        acc[weekKey].cost += item.cost;
 
         return acc;
       },
       {} as Record<string, { kwh: number; cost: number }>,
     );
-    const processedData = Object.entries(totalPerIteration).map(
-      ([month, total]) => ({
-        name: month,
-        kwh: total.kwh,
-        cost: total.cost,
+
+    const processedData = Object.entries(totalPerWeek).map(
+      ([week, totals]) => ({
+        name: week,
+        kwh: totals.kwh,
+        cost: totals.cost,
       }),
     );
 
-    return processedData.slice(0, 5).reverse();
+    return processedData.slice(0, 7).reverse();
   }, [items]);
 
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4 w-full h-100 [&_.recharts-surface]:outline-none">
       <div>
-        <h3 className="font-bold text-lg text-slate-800">Monthly Trends</h3>
-        <p className="text-sm text-slate-500">Past 5 months comparison</p>
+        <h3 className="font-bold text-lg text-slate-800">Weekly Trends</h3>
+        <p className="text-sm text-slate-500">Past 7 weeks comparison</p>
       </div>
 
-      <div className="flex-1 w-full h-fit text-xs">
+      <div className="flex-1 w-full text-xs">
         <ResponsiveContainer width="100%" height="100%">
-          {/* ComposedChart allows you to mix Bars and Lines in the same graph! */}
           <ComposedChart
-            data={monthlyDataUsage}
+            data={weeklyDataUsage}
             margin={{ left: -20, right: -10 }}
           >
             <CartesianGrid
@@ -75,20 +78,13 @@ const MonthlyConsumptionChart = () => {
               stroke="#e2e8f0"
             />
 
-            {/* The Date floor matching your YYYY-MM-DD string database entries */}
             <XAxis
               dataKey="name"
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value) =>
-                new Date(value).toLocaleDateString("en-GB", {
-                  month: "short",
-                  year: "numeric",
-                })
-              }
+              tick={{ fontSize: 11 }}
             />
 
-            {/* Left Y-Axis: Measures the height of your energy usage bars */}
             <YAxis
               yAxisId="left"
               tickLine={false}
@@ -96,7 +92,6 @@ const MonthlyConsumptionChart = () => {
               className="text-slate-400 font-medium"
             />
 
-            {/* Right Y-Axis: Measures the height of your cost billing lines */}
             <YAxis
               yAxisId="right"
               orientation="right"
@@ -105,10 +100,8 @@ const MonthlyConsumptionChart = () => {
               tickFormatter={(value) => `₦${value}`}
             />
 
-            {/* Magic hover card summary popups */}
             <Tooltip />
 
-            {/* The Blue Consumption Bars matching the heights on your left YAxis */}
             <Bar
               yAxisId="left"
               dataKey="kwh"
@@ -117,7 +110,6 @@ const MonthlyConsumptionChart = () => {
               barSize={32}
             />
 
-            {/* The Orange Cost Line overlay matching the values on your right YAxis */}
             <Line
               yAxisId="right"
               type="monotone"
@@ -133,4 +125,4 @@ const MonthlyConsumptionChart = () => {
   );
 };
 
-export default MonthlyConsumptionChart;
+export default WeeklyConsumptionChart;
