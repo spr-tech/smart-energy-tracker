@@ -1,33 +1,14 @@
 import { Zap, X } from "lucide-react";
 import Button from "../ui/Button";
 import type { Reading } from "../../type/types";
-// import { type SetStateAction } from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ReadingContext } from "../../context/ReadingsContext";
 import axios from "axios";
-
-// type AddModalProps = {
-//   handleCloseModal: () => void;
-//   setItems: React.Dispatch<React.SetStateAction<Reading[]>>;
-//   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
-//   setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
-//   apiurl: string;
-//   date: string;
-//   setDate: React.Dispatch<SetStateAction<string>>;
-//   energy: number | "";
-//   setEnergy: React.Dispatch<SetStateAction<number | "">>;
-//   cost: number | "";
-//   setCost: React.Dispatch<SetStateAction<number | "">>;
-//   states: string;
-//   setStates: React.Dispatch<SetStateAction<string>>;
-//   editReading: Reading | null;
-//   setEditReading: React.Dispatch<SetStateAction<Reading | null>>;
-// };
 
 const AddModal = () => {
   const context = useContext(ReadingContext);
   if (!context) {
-    throw new Error("dhf");
+    throw new Error("ReadingContext must be used inside a Provider");
   }
 
   const {
@@ -44,9 +25,12 @@ const AddModal = () => {
     editReading,
     setEditReading,
     setModalButton,
-    // fetchError
     setFetchError,
   } = context;
+
+  const [dateError, setDateError] = useState<string | null>(null);
+  const [energyError, setEnergyError] = useState<string | null>(null);
+  const [statesError, setStatesError] = useState<string | null>(null);
 
   const addReading = async () => {
     const newReading: Reading = {
@@ -66,7 +50,6 @@ const AddModal = () => {
       setCost("");
       setStates("");
       setModalButton(false);
-
       setEditReading(null);
     } catch (err) {
       if (err instanceof Error) {
@@ -110,10 +93,30 @@ const AddModal = () => {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!date.trim() || !energy || !states.trim()) {
-      alert("Please fill in the required fields!");
-      return;
+
+    setDateError(null);
+    setEnergyError(null);
+    setStatesError(null);
+
+    let isValid = true;
+
+    if (!date.trim()) {
+      setDateError("Date is required");
+      isValid = false;
     }
+
+    if (!energy) {
+      setEnergyError("Energy used is required");
+      isValid = false;
+    }
+
+    if (!states.trim()) {
+      setStatesError("State is required");
+      isValid = false;
+    }
+
+    if (!isValid) return;
+
     try {
       if (editReading) {
         await updateReading();
@@ -126,7 +129,7 @@ const AddModal = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm ">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
       <div className="bg-white sm:rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-slate-100">
@@ -153,7 +156,7 @@ const AddModal = () => {
         </div>
 
         <form
-          className="flex flex-col gap-8 bg-white rounded-lg p-6 focus-within:border-button"
+          className="flex flex-col gap-6 bg-white rounded-lg p-6"
           onSubmit={handleSubmit}
         >
           <div className="text-center">
@@ -162,26 +165,35 @@ const AddModal = () => {
             </h1>
             <p className="text-slate-500">
               {editReading
-                ? " Change your energy consumption details below."
-                : " Enter your energy consumption details below."}
+                ? "Change your energy consumption details below."
+                : "Enter your energy consumption details below."}
             </p>
           </div>
 
-          <div className="flex flex-col">
-            <label htmlFor="date" className="text-left text-xl">
+          {/* Date */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="date" className="text-left text-sm font-medium text-slate-700">
               Date
             </label>
             <input
               type="date"
               id="date"
-              className=" outline-button w-full h-10 rounded-lg ring ring-slate-300 p-2"
+              className="outline-button w-full h-10 rounded-lg ring ring-slate-300 p-2"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
+            <div className="h-4">
+              {dateError && (
+                <span className="text-red-600 text-sm animate-fade-in">
+                  {dateError}
+                </span>
+              )}
+            </div>
           </div>
 
-          <div>
-            <label htmlFor="energy" className="text-left text-xl">
+          {/* Energy */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="energy" className="text-left text-sm font-medium text-slate-700">
               Energy Used (kWh)
             </label>
             <input
@@ -192,15 +204,23 @@ const AddModal = () => {
               value={energy}
               onChange={(e) => setEnergy(Number(e.target.value))}
             />
+            <div className="h-4">
+              {energyError && (
+                <span className="text-red-600 text-sm animate-fade-in">
+                  {energyError}
+                </span>
+              )}
+            </div>
           </div>
 
-          <div>
-            <label htmlFor="energy" className="text-left text-xl">
-              Cost incurred
+          {/* Cost */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="cost" className="text-left text-sm font-medium text-slate-700">
+              Cost Incurred (₦)
             </label>
             <input
               type="number"
-              id="energy"
+              id="cost"
               step={0.1}
               className="outline-button w-full h-10 rounded-lg ring ring-slate-300 p-2"
               value={cost}
@@ -208,11 +228,11 @@ const AddModal = () => {
             />
           </div>
 
-          <div className=" outline-none flex flex-col">
-            <label htmlFor="states" className="text-left text-xl">
+          {/* State */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="states" className="text-left text-sm font-medium text-slate-700">
               State
             </label>
-
             <input
               id="states"
               type="text"
@@ -220,11 +240,18 @@ const AddModal = () => {
               value={states}
               onChange={(e) => setStates(e.target.value)}
             />
+            <div className="h-4">
+              {statesError && (
+                <span className="text-red-600 text-sm animate-fade-in">
+                  {statesError}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="text-right">
             <Button variant="sign" type="submit" className="font-semibold">
-              {editReading ? "Update Readiings" : "Add Readings"}
+              {editReading ? "Update Reading" : "Add Reading"}
             </Button>
           </div>
         </form>

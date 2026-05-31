@@ -10,7 +10,6 @@ const SignUp = () => {
   const [password, setPassword] = useState<string>("");
   const [showPasswrd, setShowPasswrd] = useState<boolean>(false);
 
-  //error state
   const [nameError, setNameError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -29,35 +28,31 @@ const SignUp = () => {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Reset errors and flag
     setNameError(null);
     setEmailError(null);
     setPasswordError(null);
 
     let isValid = true;
 
-    // setting name state
     if (!name.trim()) {
       setNameError("Name is required");
       isValid = false;
     } else if (name.length < 2) {
-      setNameError("Name must me atleast 2 characters");
+      setNameError("Name must be at least 2 characters");
       isValid = false;
     }
 
-    // setting email
     if (!email.trim()) {
       setEmailError("Email is required");
       isValid = false;
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        setEmailError("Enter a vaid email address");
+        setEmailError("Enter a valid email address");
         isValid = false;
       }
     }
 
-    //setting password
     if (!password.trim()) {
       setPasswordError("Password is required");
       isValid = false;
@@ -66,7 +61,6 @@ const SignUp = () => {
       isValid = false;
     }
 
-    //the check
     if (!isValid) return;
 
     localStorage.setItem("token", "springle");
@@ -74,12 +68,12 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen md:h-screen items-center justify-center bg-gray-100 p-6 ">
+    <div className="flex flex-col min-h-screen md:h-screen items-center justify-center bg-gray-100 p-6">
       <div className="flex flex-col gap-3 items-center mb-6 mt-5">
         <span className="bg-emerald-200/30 p-3 rounded-xl">
           <Zap size={50} color="green" />
         </span>
-        <h1 className="text-3xl font-semibold b">EnergyTrack</h1>
+        <h1 className="text-3xl font-semibold">EnergyTrack</h1>
         <span className="text-gray-500 text-xl">
           Smart energy consumption dashboard
         </span>
@@ -98,9 +92,9 @@ const SignUp = () => {
             </span>
           </div>
 
-          {/* name group */}
+          {/* Name group */}
           <div className="flex flex-col gap-1">
-            <label htmlFor="name" className="font-medium text-gray-00 mb-1">
+            <label htmlFor="name" className="font-medium text-gray-700 mb-1">
               Name
             </label>
             <input
@@ -110,76 +104,68 @@ const SignUp = () => {
               placeholder="John Doe"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="border border-gray-200 rounded-xl p-2
-             bg-gray-50/50 outline-none transition-all
-             focus:bg-white focus:border-emerald-500 
-              focus:outline-4 focus:outline-emerald-500/20 placeholder:text-xl "
+              className="border border-gray-200 rounded-xl p-2 bg-gray-50/50 outline-none transition-all focus:bg-white focus:border-emerald-500 focus:outline-4 focus:outline-emerald-500/20 placeholder:text-xl"
             />
-
-            <div className="h-3 ">
+            <div className="h-3">
               {nameError && (
-                <span className="text-red-600 text-md">{nameError}</span>
+                <span className="text-red-600 text-sm animate-fade-in">
+                  {nameError}
+                </span>
               )}
             </div>
           </div>
 
           {/* Email group */}
           <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="font-medium text-gray-00 mb-1">
+            <label htmlFor="email" className="font-medium text-gray-700 mb-1">
               Email
             </label>
-
             <input
               id="email"
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="border border-gray-200 rounded-xl p-2 
-             bg-gray-50/50 outline-none transition-all
-             focus:bg-white focus:border-emerald-500 
-              focus:outline-4 focus:outline-emerald-500/20 placeholder:text-xl "
+              className="border border-gray-200 rounded-xl p-2 bg-gray-50/50 outline-none transition-all focus:bg-white focus:border-emerald-500 focus:outline-4 focus:outline-emerald-500/20 placeholder:text-xl"
             />
-
-            <div className="h-3  ">
+            <div className="h-3">
               {emailError && (
-                <span className="text-red-600 text-md">{emailError}</span>
+                <span className="text-red-600 text-sm animate-fade-in">
+                  {emailError}
+                </span>
               )}
             </div>
           </div>
 
-          {/* password group */}
+          {/* Password group */}
           <div className="flex flex-col gap-2">
-            <label htmlFor="password" className="font-medium text-gray-00 mb-1">
+            <label
+              htmlFor="password"
+              className="font-medium text-gray-700 mb-1"
+            >
               Password
             </label>
-
-            {/* show password toggler included */}
-            <div
-              className=" flex border border-gray-200 rounded-xl p-2 
-             bg-gray-50/50 outline-none transition-all focus-within:border-emerald-500 
-             "
-            >
+            <div className="flex border border-gray-200 rounded-xl p-2 bg-gray-50/50 outline-none transition-all focus-within:border-emerald-500">
               <input
                 id="password"
                 type={showPasswrd ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="....."
-                className=" flex-1 outline-0 placeholder:text-xl"
+                className="flex-1 outline-0 placeholder:text-xl"
               />
-
               <button
                 type="button"
                 onClick={() => setShowPasswrd((prev) => !prev)}
               >
-                {showPasswrd ? <Eye size={20} /> : <EyeOff size={20} />}{" "}
+                {showPasswrd ? <Eye size={20} /> : <EyeOff size={20} />}
               </button>
             </div>
-
-            <div className="h-3 mb-2 ">
+            <div className="h-3 mb-2">
               {passwordError && (
-                <span className=" text-red-600 text-md">{passwordError}</span>
+                <span className="text-red-600 text-sm animate-fade-in">
+                  {passwordError}
+                </span>
               )}
             </div>
           </div>
@@ -189,9 +175,8 @@ const SignUp = () => {
           </Button>
         </form>
 
-        <div className=" flex gap-2 justify-center ">
-          <span>Don't have an account?</span>
-          {/* <Button type="signup">Sign in</Button> */}
+        <div className="flex gap-2 justify-center">
+          <span>Already have an account?</span>
           <Link
             to="/login"
             className="text-emerald-500 font-medium hover:underline"

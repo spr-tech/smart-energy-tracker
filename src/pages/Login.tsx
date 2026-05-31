@@ -7,8 +7,6 @@ const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [emailError, setEmailError] = useState<string | null>(null);
-
-  //error state
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [showPasswrd, setShowPasswrd] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -27,19 +25,17 @@ const Login = () => {
   if (isLoggedin) {
     return <Navigate to="/" replace />;
   }
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Reset errors and flag
     setEmailError(null);
     setPasswordError(null);
     let isValid: boolean = true;
 
-    // Email Validation
     if (!email.trim()) {
       setEmailError("Email is required");
       isValid = false;
-      alert("fhf");
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
@@ -48,7 +44,6 @@ const Login = () => {
       }
     }
 
-    // Password Validation
     if (!password.trim()) {
       setPasswordError("Password is required");
       isValid = false;
@@ -65,8 +60,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col  min-h-screen md:h-screen items-center  justify-center bg-gray-100 p-4 rounded-no">
-      {/* Icon  */}
+    <div className="flex flex-col min-h-screen md:h-screen items-center justify-center bg-gray-100 p-4">
+      {/* Icon */}
       <div className="flex flex-col gap-3 items-center mb-6 text-center">
         <span className="bg-emerald-200/30 p-3 rounded-xl">
           <Zap size={50} className="text-button" />
@@ -77,7 +72,7 @@ const Login = () => {
         </p>
       </div>
 
-      {/*Greetings & instruction */}
+      {/* Form Card */}
       <div className="bg-white shadow-xl shadow-gray-200/50 p-6 rounded-2xl w-full max-w-lg">
         <form onSubmit={handleSubmit} className="flex flex-col w-full">
           <div className="mb-6">
@@ -93,11 +88,7 @@ const Login = () => {
           <div className="flex flex-col">
             <label
               htmlFor="email"
-              className={
-                emailError
-                  ? "font-medium text-red-600 mb-1"
-                  : "font-medium text-gray-00 mb-1"
-              }
+              className={`font-medium mb-1 ${emailError ? "text-red-600" : "text-gray-700"}`}
             >
               Email
             </label>
@@ -108,11 +99,13 @@ const Login = () => {
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border border-gray-200 rounded-xl p-2 bg-gray-50/50 outline-none transition-all focus:bg-white focus:border-emerald-500 f"
+              className="border border-gray-200 rounded-xl p-2 bg-gray-50/50 outline-none transition-all focus:bg-white focus:border-emerald-500"
             />
             <div className="h-6 mt-1">
               {emailError && (
-                <span className="text-red-600 text-sm">{emailError}</span>
+                <span className="text-red-600 text-sm animate-fade-in">
+                  {emailError}
+                </span>
               )}
             </div>
           </div>
@@ -121,25 +114,20 @@ const Login = () => {
           <div className="flex flex-col mt-2">
             <label
               htmlFor="password"
-              className={
-                passwordError
-                  ? "font-medium text-red-600 mb-1"
-                  : "font-medium text-gray-00 mb-1"
-              }
+              className={`font-medium mb-1 ${passwordError ? "text-red-600" : "text-gray-700"}`}
             >
               Password
             </label>
 
-            <div className="flex border border-gray-200 rounded-xl p-2 bg-gray-50/50 outline-none transition-all focus:bg-white focus:border-emerald-500">
+            <div className="flex border border-gray-200 rounded-xl p-2 bg-gray-50/50 transition-all focus-within:bg-white focus-within:border-emerald-500">
               <input
                 id="password"
                 type={showPasswrd ? "text" : "password"}
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="flex-1 outline-none"
+                className="flex-1 outline-none bg-transparent"
               />
-
               <Button
                 type="button"
                 onClick={() => setShowPasswrd((prev) => !prev)}
@@ -149,7 +137,9 @@ const Login = () => {
             </div>
             <div className="h-6 mt-1">
               {passwordError && (
-                <span className="text-red-600 text-sm">{passwordError}</span>
+                <span className="text-red-600 text-sm animate-fade-in">
+                  {passwordError}
+                </span>
               )}
             </div>
           </div>

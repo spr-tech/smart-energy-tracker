@@ -34,8 +34,8 @@ const AppLayout = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen w-full bg-[#f7fafc] overflow-hidden">
-      {/* SIDEBAR SIDE CONTENT */}
+    <div className="flex flex-col md:flex-row h-screen w-full bg-slate-50 overflow-hidden">
+      {/* SIDEBAR */}
       <aside className="fixed bottom-0 left-0 right-0 z-40 flex flex-col bg-white border-t border-gray-200 md:relative md:h-screen md:w-64 md:min-w-[16rem] md:border-t-0 md:border-r md:border-gray-300/70 shrink-0">
         {/* LOGO */}
         <div className="hidden md:flex gap-2 items-center my-4 p-4">
@@ -122,14 +122,14 @@ const AppLayout = () => {
         </footer>
       </aside>
 
-      {/* DASHBOARD MAIN CONTENT */}
-      <main className="flex-1 min-w-0 md:h-full overflow-y-auto pb-20 md:pb-0 ">
+      {/* MAIN CONTENT */}
+      <main className="flex-1 min-w-0 md:h-full overflow-y-auto pb-20 md:pb-0">
         {fetchError ? (
           <div className="flex justify-center items-center h-full text-red-500 font-bold p-4">
             {fetchError}
           </div>
         ) : (
-          <div className="p-4 sm:p-6 md:p-8 lg:p-12 max-w-7xl mx-auto">
+          <div className="p-4 sm:p-6 md:p-8 lg:p-12 max-w-7xl ">
             <Outlet />
           </div>
         )}

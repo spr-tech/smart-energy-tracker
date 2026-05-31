@@ -1,111 +1,75 @@
 import Button from "../components/ui/Button";
 import { Search, Download, Plus } from "lucide-react";
-import AddModal from "../components/readingsInfo/AddModal";
 import ReadingsTable from "../components/readingsInfo/ReadingsTable";
 import { useContext } from "react";
-// import type { SetStateAction } from "react";
-// import { useState } from "react";
-// import axios from "axios";
 import { ReadingContext } from "../context/ReadingsContext";
 
-// type ReadingsProp = {
-//   items: Reading[];
-//   isLoading: boolean;
-//   modalButton: boolean;
-//   setErrorMessage: React.Dispatch<SetStateAction<string | null>>;
+const Readings = () => {
+  const context = useContext(ReadingContext);
+  if (!context) {
+    throw new Error("ReadingContext must be used inside Provider");
+  }
 
-//   handleOpenModal: () => void;
-//   setItems: React.Dispatch<React.SetStateAction<Reading[]>>;
-//   setModalButton: React.Dispatch<React.SetStateAction<boolean>>;
-//   apiurl: string;
-// };
+  const { isLoading, handleAddModalClick } = context;
 
-const Readings = () =>
-  // items,
-  // isLoading,
-  // modalButton,
-  // handleOpenModal,
-  // setItems,
-  // setModalButton,
-  // setErrorMessage,
-  // apiurl,
-  {
-    const context = useContext(ReadingContext);
-    if (!context) {
-      throw new Error("ReadingContext must be used inside Provider");
-    }
-
-    const { isLoading, modalButton, handleAddModalClick } = context;
-
-    return (
-      <>
-        <div className="  flex flex-col gap-10 overflow-hidden">
-          <div className="flex flex-col gap-8 ">
-            {/* the head text */}
-
-            <header className="flex flex-col justify-between gap-4 sm:flex-row sm:justify-between md:items-center">
-              <div className="flex flex-col md:gap-2">
-                <h1 className="font-semibold text-3xl md:text-[2rem]">
-                  Readings
-                </h1>
-                <span className="text-xl text-slate-500">
-                  Manage your daily energy logs.
-                </span>
-              </div>
-
-              {/* Button container */}
-              <div className="flex gap-2 justify-center">
-                <Button className="flex justify-center items-center gap-3 border border-button hover:bg-button hover:text-white rounded-lg w-40 h-8 sm:w-22  md:w-30 md:h-10 ">
-                  <span>
-                    <Download size={15} />
-                  </span>
-                  <span>Export</span>
-                </Button>
-
-                <Button
-                  onClick={handleAddModalClick}
-                  className="bg-button hover:bg-green-300 text-white flex justify-center gap-4 md:gap-7 items-center w-45 h-8 sm:w-22 md:w-30 md:h-10 rounded-lg"
-                >
-                  <span className="text-xl">
-                    <Plus size={15} />
-                  </span>
-                  <span className=" md:text-xl">Add</span>
-                </Button>
-              </div>
-            </header>
-
-            {/* search item */}
-            <section className="md:w-120">
-              <form
-                action=""
-                className="flex rounded-xl gap-2 p-2 border border-gray-300 focus-within:border-emerald-500 shadow w-70 h-10 sm:w-90 "
-              >
-                <Search size={30} className="text-gray-300" />
-                <input
-                  autoFocus
-                  type="text"
-                  placeholder="Search dates or notes..."
-                  className="outline-0 flex-1 placeholder:text-gray-4 sm:text-xl "
-                />
-              </form>
-            </section>
+  return (
+    <div className="flex flex-col gap-10 overflow-hidden p-4 sm:p-6">
+      <div className="flex flex-col gap-6">
+        {/* Header */}
+        <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-2xl font-bold text-slate-800">Readings</h1>
+            <span className="text-sm text-slate-500">
+              Manage your daily energy logs.
+            </span>
           </div>
 
-          {/* content */}
-          <section className="overflow-y-auto border border-slate-300 rounded-xl w-full">
-            {isLoading ? (
-              <p className="text-xl text-center p-10">Loading items...</p>
-            ) : (
-              <div className="w-full">
-                <ReadingsTable />
-              </div>
-            )}
-          </section>
-        </div>
-        {/* Add modal */}
-        <div>{modalButton && <AddModal />}</div>
-      </>
-    );
-  };
+          {/* Button container */}
+          <div className="flex gap-2">
+            <Button className="flex flex-1 sm:flex-none justify-center items-center gap-2 border border-button hover:bg-button hover:text-white rounded-lg px-4 h-10">
+              <Download size={15} />
+              <span>Export</span>
+            </Button>
+
+            <Button
+              onClick={handleAddModalClick}
+              className="flex flex-1 sm:flex-none justify-center items-center gap-2 bg-button hover:bg-green-300 text-white rounded-lg px-4 h-10"
+            >
+              <Plus size={15} />
+              <span>Add</span>
+            </Button>
+          </div>
+        </header>
+
+        {/* Search */}
+        <section className="w-full md:w-120">
+          <form
+            action=""
+            className="flex items-center rounded-xl gap-2 p-2 border border-gray-300 focus-within:border-emerald-500 shadow w-full h-10"
+          >
+            <Search size={20} className="text-gray-300 shrink-0" />
+            <input
+              autoFocus
+              type="text"
+              placeholder="Search dates or notes..."
+              className="outline-0 flex-1 placeholder:text-gray-400 text-sm"
+            />
+          </form>
+        </section>
+      </div>
+
+      {/* Content */}
+      <section className="overflow-y-auto border border-slate-300 rounded-xl w-full">
+        {isLoading ? (
+          <p className="text-xl text-center p-10">Loading items...</p>
+        ) : (
+          <div className="w-full">
+            <ReadingsTable />
+          </div>
+        )}
+      </section>
+    </div>
+  );
+};
 
 export default Readings;

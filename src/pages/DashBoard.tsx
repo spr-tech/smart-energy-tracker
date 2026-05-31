@@ -6,6 +6,7 @@ import { useContext, useMemo } from "react";
 import { Zap, Banknote, Hourglass } from "lucide-react";
 import WeeklyConsumptionChart from "../components/dashboardCharts/WeeklyConsumptionChart";
 import RecentReadings from "../components/dashboardCharts/RecentReadings";
+import DashboardAlertBanner from "../components/DashboardAlertBanner";
 
 const DashBoard = () => {
   const context = useContext(ReadingContext);
@@ -67,9 +68,10 @@ const DashBoard = () => {
   }
 
   return (
-    <div className="outline-none border-none">
+    <div className="outline-none border-none p-6">
+      <DashboardAlertBanner />
       <header className="mb-5">
-        <h1 className="text-3xl font-semibold">DashBoard</h1>
+        <h1 className=" text-2xl font-bold text-slate-800">DashBoard</h1>
         <span className="text-slate-600">
           Overview of your energy consumption
         </span>

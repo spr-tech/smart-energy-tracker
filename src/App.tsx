@@ -12,14 +12,14 @@ import { useContext, useEffect } from "react";
 import axios from "axios";
 import { ReadingContext } from "./context/ReadingsContext";
 import AddModal from "./components/readingsInfo/AddModal";
-// import ReadingsTable from "./compnents/readingsInfo/ReadingsTable";
 
 const App = () => {
   const context = useContext(ReadingContext);
   if (!context) {
     throw new Error("ReadingContext must be used inside Provider");
   }
-  const { API_URL, setItems, modalButton, setFetchError, setIsLoading } =
+
+  const { API_URL, setItems, setFetchError, setIsLoading, modalButton } =
     context;
 
   useEffect(() => {
@@ -33,7 +33,6 @@ const App = () => {
           setItems(response?.data || []);
           setIsLoading(false);
         }, 2000);
-        // console.log("ITEMS:",   formattedData);
 
         setFetchError("");
       } catch (err) {
@@ -43,28 +42,11 @@ const App = () => {
         } else {
           setFetchError("Unknown error occurred");
         }
-        // console.log("STATE ITEMS:", items);
-        //   console.log("API ERROR:", err);
       }
     };
 
     fetchItems();
-  }, []);
-
-  // const handleModalButton = () => {
-  //   setModalButton((prev) => !prev);
-  // };
-
-  // const handleAddClick = () => {
-  //   setEditReading(null);
-
-  //   setDate("");
-  //   setEnergy("");
-  //   setCost("");
-  //   setStates("");
-
-  //   handleOpenModal();
-  // };
+  }, [API_URL, setItems, setFetchError, setIsLoading]);
 
   return (
     <div className="h-dvh overflow-hidden">
@@ -76,7 +58,6 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
 
         {/* Protected pages */}
-
         <Route element={<AuthGuard />}>
           <Route path="/" element={<AppLayout />}>
             <Route index element={<DashBoard />} />
