@@ -126,4 +126,4 @@ src/
 ├── App.tsx
 ├── index.css
 ├── main.tsx
-└── assets/dvs 
+└── assets/
