@@ -43,7 +43,15 @@ const AddModal = () => {
 
     try {
       const response = await axios.post(API_URL, newReading);
-      setItems((prev) => [response.data, ...prev]);
+      const saved = response.data;
+      const newItem = {
+        id: saved.id,
+        date: saved.date,
+        kwh: saved.kwh,
+        cost: saved.cost,
+        states: saved.states,
+      };
+      setItems((prev) => [newItem, ...prev]);
 
       setDate("");
       setEnergy("");
@@ -172,7 +180,10 @@ const AddModal = () => {
 
           {/* Date */}
           <div className="flex flex-col gap-1">
-            <label htmlFor="date" className="text-left text-sm font-medium text-slate-700">
+            <label
+              htmlFor="date"
+              className="text-left text-sm font-medium text-slate-700"
+            >
               Date
             </label>
             <input
@@ -193,7 +204,10 @@ const AddModal = () => {
 
           {/* Energy */}
           <div className="flex flex-col gap-1">
-            <label htmlFor="energy" className="text-left text-sm font-medium text-slate-700">
+            <label
+              htmlFor="energy"
+              className="text-left text-sm font-medium text-slate-700"
+            >
               Energy Used (kWh)
             </label>
             <input
@@ -215,7 +229,10 @@ const AddModal = () => {
 
           {/* Cost */}
           <div className="flex flex-col gap-1">
-            <label htmlFor="cost" className="text-left text-sm font-medium text-slate-700">
+            <label
+              htmlFor="cost"
+              className="text-left text-sm font-medium text-slate-700"
+            >
               Cost Incurred (₦)
             </label>
             <input
@@ -230,7 +247,10 @@ const AddModal = () => {
 
           {/* State */}
           <div className="flex flex-col gap-1">
-            <label htmlFor="states" className="text-left text-sm font-medium text-slate-700">
+            <label
+              htmlFor="states"
+              className="text-left text-sm font-medium text-slate-700"
+            >
               State
             </label>
             <input

@@ -28,12 +28,11 @@ const App = () => {
 
       try {
         const response = await axios.get(API_URL);
-
-        setTimeout(() => {
-          setItems(response?.data || []);
-          setIsLoading(false);
-        }, 2000);
-
+        const sorted = [...(response?.data || [])].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+        );
+        setItems(sorted);
+        setIsLoading(false);
         setFetchError("");
       } catch (err) {
         if (err instanceof Error) {

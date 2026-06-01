@@ -3,7 +3,7 @@ import MonthlyConsumptionChart from "../components/dashboardCharts/MonthlyConsum
 
 import { ReadingContext } from "../context/ReadingsContext";
 import { useContext, useMemo } from "react";
-import { Zap, Banknote, Hourglass } from "lucide-react";
+import { Zap, Banknote, Hourglass, Target } from "lucide-react";
 import WeeklyConsumptionChart from "../components/dashboardCharts/WeeklyConsumptionChart";
 import RecentReadings from "../components/dashboardCharts/RecentReadings";
 import DashboardAlertBanner from "../components/DashboardAlertBanner";
@@ -17,12 +17,25 @@ const DashBoard = () => {
 
   const { items } = context;
 
-  const latest = items?.[0];
-  const latestDate = latest ? new Date(latest.date) : null;
-  const latestMonth = latestDate?.getMonth();
-  const latestYear = latestDate?.getFullYear();
+  // const latest = items?.[0];
+  // const latestDate = latest ? new Date(latest.date) : null;
+  // const latestMonth = latestDate?.getMonth();
+  // const latestYear = latestDate?.getFullYear();
+
+  const now = new Date();
+  const latestMonth = now.getMonth();
+  const latestYear = now.getFullYear();
 
   console.log(latestMonth);
+
+  const goalLimit = useMemo(() => {
+    try {
+      const saved = localStorage.getItem("energy_goals");
+      return saved ? JSON.parse(saved).energyLimit : 0;
+    } catch {
+      return 0;
+    }
+  }, []);
 
   const {
     totalOfCurrentMonthEnergy,
@@ -115,8 +128,20 @@ const DashBoard = () => {
           </div>
           <Hourglass className="text-button" />
         </div>
-        {/* Placeholder Card 4 */}
-        <div className="bg-white shadow-md rounded-lg p-5 min-h-25"></div>
+
+        {/* Card 4: Remaining Goal */}
+        <div className="bg-white shadow-md rounded-lg p-5 flex justify-between">
+          <div className="flex flex-col gap-2">
+            <span className="text-slate-500 text-sm font-medium">
+              Remaining Goal
+            </span>
+            <span className="text-2xl font-bold">
+              {Math.max(0, goalLimit - totalOfCurrentMonthEnergy).toFixed(2)}{" "}
+              kWh
+            </span>
+          </div>
+          <Target className="text-button" />
+        </div>
       </section>
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 md: md:gap-6 w-full">

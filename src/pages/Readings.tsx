@@ -10,7 +10,44 @@ const Readings = () => {
     throw new Error("ReadingContext must be used inside Provider");
   }
 
-  const { isLoading, handleAddModalClick } = context;
+  const { items, isLoading, handleAddModalClick } = context;
+
+  const handleExport = () => {
+    if (items.length === 0) return;
+
+    // Build CSV header row
+    const headers = ["Date", "Energy (kWh)", "Cost (₦)", "State"];
+
+    // Build each data row
+    const rows = items.map((item) => [
+      new Date(item.date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      item.kwh,
+      item.cost,
+      item.states,
+    ]);
+
+    // Combine header and rows into one CSV string
+    const csvContent = [headers, ...rows]
+      .map((row) => row.join(","))
+      .join("\n");
+
+    // Create a downloadable file from the CSV string
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary link and click it to trigger download
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "energy-readings.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="flex flex-col gap-10 overflow-hidden p-4 sm:p-6">
@@ -26,7 +63,10 @@ const Readings = () => {
 
           {/* Button container */}
           <div className="flex gap-2">
-            <Button className="flex flex-1 sm:flex-none justify-center items-center gap-2 border border-button hover:bg-button hover:text-white rounded-lg px-4 h-10">
+            <Button
+              onClick={handleExport}
+              className="flex flex-1 sm:flex-none justify-center items-center gap-2 border border-button hover:bg-button hover:text-white rounded-lg px-4 h-10"
+            >
               <Download size={15} />
               <span>Export</span>
             </Button>
