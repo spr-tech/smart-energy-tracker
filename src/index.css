@@ -7,3 +7,10 @@
   --border-width-thin: 0.5px;
   --color-button: #21c45d;
 }
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}

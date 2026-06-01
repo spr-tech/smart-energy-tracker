@@ -68,7 +68,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen md:h-screen items-center justify-center bg-gray-100 p-6">
+    <div className="flex flex-col min-h-screen items-center justify-center bg-gray-100 p-6">
       <div className="flex flex-col gap-3 items-center mb-6 mt-5">
         <span className="bg-emerald-200/30 p-3 rounded-xl">
           <Zap size={50} color="green" />
@@ -78,7 +78,6 @@ const SignUp = () => {
           Smart energy consumption dashboard
         </span>
       </div>
-
       <div className="bg-white shadow shadow-gray-700/30 p-3 rounded-lg w-full max-w-lg">
         <form
           action=""

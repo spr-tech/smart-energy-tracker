@@ -123,13 +123,13 @@ const AppLayout = () => {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 min-w-0 md:h-full overflow-y-auto pb-20 md:pb-0">
+      <main className="flex-1 min-w-0 h-full overflow-y-auto pb-20 md:pb-0 bg-slate-50">
         {fetchError ? (
           <div className="flex justify-center items-center h-full text-red-500 font-bold p-4">
             {fetchError}
           </div>
         ) : (
-          <div className="p-4 sm:p-6 md:p-8 lg:p-12 max-w-7xl ">
+          <div className="p-4 sm:p-6 md:p-8 lg:p-12 max-w-7xl">
             <Outlet />
           </div>
         )}
