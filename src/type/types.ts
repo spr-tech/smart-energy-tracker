@@ -5,3 +5,9 @@ export type Reading = {
   cost: number;
   states: string;
 };
+
+export type GoalLimits = {
+  energyLimit: number;
+  budgetLimit: number;
+  alertThreshold: number;
+};

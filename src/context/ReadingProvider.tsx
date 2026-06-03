@@ -10,7 +10,7 @@ const ReadingProvider = ({ children }: { children: React.ReactNode }) => {
   const [editReading, setEditReading] = useState<Reading | null>(null);
 
   const API_URL =
-    "https://6a0371192afe8349b4b5376a.mockapi.io/api/energydata/energydata?limit=100";
+    "https://6a0371192afe8349b4b5376a.mockapi.io/api/energydata/energydata";
   const [date, setDate] = useState<string>("");
   const [energy, setEnergy] = useState<number | "">("");
   const [cost, setCost] = useState<number | "">("");

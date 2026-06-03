@@ -81,10 +81,10 @@ const SignUp = () => {
       <div className="bg-white shadow shadow-gray-700/30 p-3 rounded-lg w-full max-w-lg">
         <form
           action=""
-          className="flex flex-col gap-6 w-full p-3"
+          className="flex flex-col gap-4 w-full p-3"
           onSubmit={handleSubmit}
         >
-          <div className="mb-4">
+          <div className="mb-2">
             <h3 className="font-semibold text-xl">Create an account</h3>
             <span className="text-gray-500">
               Enter your details to get started

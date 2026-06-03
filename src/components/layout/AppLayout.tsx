@@ -34,9 +34,9 @@ const AppLayout = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen w-full bg-slate-50 overflow-hidden">
+    <div className="flex flex-col md:flex-row h-full w-full bg-slate-50 overflow-hidden">
       {/* SIDEBAR */}
-      <aside className="fixed bottom-0 left-0 right-0 z-40 flex flex-col bg-white border-t border-gray-200 md:relative md:h-screen md:w-64 md:min-w-[16rem] md:border-t-0 md:border-r md:border-gray-300/70 shrink-0">
+      <aside className="fixed bottom-0 left-0 right-0 z-40 flex flex-col bg-white border-t border-gray-200 md:relative md:h-full md:w-64 md:min-w-[16rem] md:border-t-0 md:border-r md:border-gray-300/70 shrink-0">
         {/* LOGO */}
         <div className="hidden md:flex gap-2 items-center my-4 p-4">
           <span className="bg-green-200 p-3 rounded-lg">

@@ -86,11 +86,11 @@ const Tips = () => {
   ];
 
   return (
-    <div className="p-4 sm:p-6">
+    <div className="px-4 sm:px-6">
       {/* Heading */}
       <header className="flex flex-col justify-center items-center bg-[#e1f5ea] text-center h-40 md:h-55 gap-4 rounded-xl mb-7">
-        <h1 className="text-2xl md:text-5xl font-bold">Smart Energy Tips</h1>
-        <span className="text-slate-600 md:text-xl px-3 lg:w-2xl">
+        <h1 className="text-2xl md:text-3xl font-bold">Smart Energy Tips</h1>
+        <span className="text-slate-600 md:text-base px-3 lg:w-2xl">
           Small changes in your daily habits can lead to significant reductions
           in your energy consumption and monthly bills
         </span>

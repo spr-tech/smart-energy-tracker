@@ -48,7 +48,7 @@ const App = () => {
   }, [API_URL, setItems, setFetchError, setIsLoading]);
 
   return (
-    <div className="h-dvh overflow-hidden">
+    <div className="h-full">
       {modalButton && <AddModal />}
 
       <Routes>

@@ -102,14 +102,6 @@ const WeeklyConsumptionChart = () => {
 
             <Tooltip />
 
-            <Bar
-              yAxisId="left"
-              dataKey="kwh"
-              fill="#21c45d"
-              radius={[4, 4, 0, 0]}
-              barSize={32}
-            />
-
             <Line
               yAxisId="right"
               type="monotone"
@@ -117,6 +109,14 @@ const WeeklyConsumptionChart = () => {
               stroke="#f97316"
               strokeWidth={3}
               dot={{ r: 4, fill: "#f97316" }}
+            />
+
+            <Bar
+              yAxisId="left"
+              dataKey="kwh"
+              fill="#21c45d"
+              radius={[4, 4, 0, 0]}
+              barSize={32}
             />
           </ComposedChart>
         </ResponsiveContainer>
