@@ -42,12 +42,12 @@ const DashboardAlertBanner = () => {
   }, [items]);
   console.log(currentMonthStats);
 
-  const energyPercent = currentMonthStats.kwh / goals.energyLimit;
-  const budgetPercent = currentMonthStats.cost / goals.budgetLimit;
+  const energyPercent = (currentMonthStats.kwh / goals.energyLimit) * 100;
+  const budgetPercent = (currentMonthStats.cost / goals.budgetLimit) * 100;
 
   const atLimit =
-    currentMonthStats.kwh >= goals.energyLimit ||
-    currentMonthStats.cost >= goals.budgetLimit;
+    currentMonthStats.kwh >= goals.alertThreshold ||
+    currentMonthStats.cost >= goals.alertThreshold;
 
   const exceededLimit = energyPercent >= 100 || budgetPercent >= 100;
 
@@ -64,7 +64,9 @@ const DashboardAlertBanner = () => {
       className={`border-x-4 px-4 py-3 rounded mb-4 font-medium ${
         exceededLimit
           ? "bg-red-100 border-red-400 text-red-800"
-          : "bg-yellow-50 border-yellow-400 text-yellow-800"
+          : atLimit
+            ? "bg-yellow-50 border-yellow-400 text-yellow-800"
+            : null
       }`}
     >
       {alertMessage}

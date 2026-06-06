@@ -8,6 +8,7 @@ const ReadingProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [modalButton, setModalButton] = useState<boolean>(false);
   const [editReading, setEditReading] = useState<Reading | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const API_URL =
     "https://6a0371192afe8349b4b5376a.mockapi.io/api/energydata/energydata";
@@ -69,6 +70,9 @@ const ReadingProvider = ({ children }: { children: React.ReactNode }) => {
 
         editReading,
         setEditReading,
+
+        successMessage,
+        setSuccessMessage,
 
         handleAddModalClick,
         handleEditReadings,

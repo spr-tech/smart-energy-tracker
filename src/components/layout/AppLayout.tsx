@@ -22,7 +22,7 @@ const AppLayout = () => {
     throw new Error("ReadingContext must be used inside a Provider");
   }
 
-  const { fetchError, handleAddModalClick } = context;
+  const { fetchError, handleAddModalClick, successMessage } = context;
   const navigate = useNavigate();
   const [userEmail] = useState<string | null>(() =>
     localStorage.getItem("loggedEmail"),
@@ -35,6 +35,13 @@ const AppLayout = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-50 overflow-hidden">
+      {/* SUCCESS message */}
+      {successMessage && (
+        <div className="fixed bottom-4 right-4 z-50 bg-green-500 text-white text-sm font-semibold px-4 py-3 rounded-xl shadow-lg animate-fade-in">
+          {successMessage}
+        </div>
+      )}
+
       {/* SIDEBAR */}
       <aside className="fixed bottom-0 left-0 right-0 z-40 flex flex-col bg-white border-t border-gray-200 md:relative md:h-full md:w-64 md:min-w-[16rem] md:border-t-0 md:border-r md:border-gray-300/70 shrink-0">
         {/* LOGO */}
@@ -53,13 +60,13 @@ const AppLayout = () => {
         <nav className="flex-1 overflow-y-auto">
           <div className="flex justify-around items-center p-2 md:flex-col md:gap-3 md:p-4 md:items-stretch">
             {/* ADD ACTION BUTTON */}
-            <div className="hidden md:flex bg-button hover:bg-emerald-400 w-full items-center justify-center p-3 rounded-lg mb-4">
+            <div className="hidden md:flex bg-button hover:bg-emerald-400 w-full items-center justify-center px-3 py-1 rounded-lg mb-4">
               <Button
                 className="flex flex-1 justify-center items-center gap-3 text-white"
                 onClick={handleAddModalClick}
               >
                 <span className="rounded-full ring-2 ring-gray-200 p-1">
-                  <Plus size={23} />
+                  <Plus size={12} />
                 </span>
                 <span>Add reading</span>
               </Button>
@@ -129,7 +136,7 @@ const AppLayout = () => {
             {fetchError}
           </div>
         ) : (
-          <div className="p-4 sm:p-6 md:p-8 lg:p-12 max-w-7xl">
+          <div className="p-4 sm:p-6 md:p-8 lg:p-12 max-w-8xl mx-auto">
             <Outlet />
           </div>
         )}

@@ -10,8 +10,14 @@ const ReadingsTable = () => {
     throw new Error("ReadingContext must be used inside a Provider");
   }
 
-  const { items, setItems, setFetchError, API_URL, handleEditReadings } =
-    context;
+  const {
+    items,
+    setItems,
+    setFetchError,
+    API_URL,
+    handleEditReadings,
+    setSuccessMessage,
+  } = context;
 
   const [disableDeleteButton, setDisableDeleteButton] = useState<string | null>(
     null,
@@ -30,6 +36,8 @@ const ReadingsTable = () => {
       await axios.delete(`${API_URL}/${id}`);
       setItems((prev) => prev.filter((item) => item.id !== id));
       setConfirmDeleteItem(null);
+      setSuccessMessage("Reading deleted successfully");
+      setTimeout(() => setSuccessMessage(null), 2000);
     } catch (err) {
       if (err instanceof Error) {
         return setFetchError(err.message);

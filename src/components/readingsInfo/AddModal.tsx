@@ -26,6 +26,7 @@ const AddModal = () => {
     setEditReading,
     setModalButton,
     setFetchError,
+    setSuccessMessage,
   } = context;
 
   const [dateError, setDateError] = useState<string | null>(null);
@@ -59,6 +60,8 @@ const AddModal = () => {
       setStates("");
       setModalButton(false);
       setEditReading(null);
+      setSuccessMessage("Reading successfully added");
+      setTimeout(() => setSuccessMessage(null), 2000);
     } catch (err) {
       if (err instanceof Error) {
         setFetchError(err.message);
@@ -82,9 +85,20 @@ const AddModal = () => {
         `${API_URL}/${editReading.id}`,
         changedReading,
       );
+      const saved = response.data;
+
+      const edittedReading = {
+        id: saved.id,
+        date: saved.date,
+        kwh: saved.kwh,
+        cost: saved.cost,
+        states: saved.states,
+      };
 
       setItems((prev) =>
-        prev.map((item) => (editReading.id === item.id ? response.data : item)),
+        prev.map((item) =>
+          editReading.id === item.id ? edittedReading : item,
+        ),
       );
 
       setCost("");
@@ -92,6 +106,8 @@ const AddModal = () => {
       setEnergy("");
       setStates("");
       setModalButton(false);
+      setSuccessMessage("Readings succesfully updated");
+      setTimeout(() => setSuccessMessage(null), 2000);
     } catch (err) {
       if (err instanceof Error) {
         return setFetchError(err.message);

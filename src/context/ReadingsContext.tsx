@@ -31,6 +31,9 @@ type ReadingContextType = {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 
+  successMessage: string | null;
+  setSuccessMessage: React.Dispatch<React.SetStateAction<string | null>>;
+
   handleAddModalClick: () => void;
   handleEditReadings: (item: Reading) => void;
 };
