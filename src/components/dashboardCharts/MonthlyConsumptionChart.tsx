@@ -56,13 +56,13 @@ const MonthlyConsumptionChart = () => {
   }, [items]);
 
   return (
-    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4 w-full h-100 [&_.recharts-surface]:outline-none">
+    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4 w-full h-80 [&_.recharts-surface]:outline-none">
       <div>
         <h3 className="font-bold text-lg text-slate-800">Monthly Trends</h3>
         <p className="text-sm text-slate-500">Past 5 months comparison</p>
       </div>
 
-      <div className="flex-1 w-full h-fit text-xs">
+      <div className="flex-1 w-full  text-xs min-h-0">
         <ResponsiveContainer width="100%" height="100%">
           {/* ComposedChart allows you to mix Bars and Lines in the same graph! */}
           <ComposedChart

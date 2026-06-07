@@ -16,7 +16,7 @@ const DashBoard = () => {
     throw new Error("ReadingContext should be inside a provider");
   }
 
-  const { items } = context;
+  const { items, isLoading } = context;
 
   const GOAL_TOKEN = "energy_token";
   const [goals] = useState<GoalLimits>(() => {
@@ -61,14 +61,13 @@ const DashBoard = () => {
     return { ...totals, dailyEnergyAverage };
   }, [items, currentMonth, currentYear, daysElapsed]);
 
-  if (!items || items.length === 0) {
+  if (isLoading) {
     return (
       <div className="p-5">
-        <p className="text-slate-600">Loading dashboard info...</p>
+        <p className="text-slate-600">Loading.... </p>
       </div>
     );
   }
-
   const remainingGoal = goals.energyLimit - totalOfCurrentMonthEnergy;
 
   return (

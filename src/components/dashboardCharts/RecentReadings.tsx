@@ -1,6 +1,6 @@
 import { ReadingContext } from "../../context/ReadingsContext";
 import { useContext } from "react";
-import Button from "../ui/Button";
+import { Link } from "react-router-dom";
 
 const RecentReadings = () => {
   const context = useContext(ReadingContext);
@@ -13,7 +13,7 @@ const RecentReadings = () => {
 
   return (
     <>
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4 w-full h-fit [&_.recharts-surface]:outline-none">
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4 w-full ">
         <header className="flex justify-between">
           <div>
             <h1 className="font-bold text-slate-800 text-lg">
@@ -23,9 +23,12 @@ const RecentReadings = () => {
           </div>
 
           <div>
-            <Button className="bg-white shadow-sm border border-slate-300 py-1 px-3 rounded-lg">
+            <Link
+              to="/readings"
+              className="bg-white shadow-sm border border-slate-300 py-1 px-3 rounded-lg"
+            >
               View all
-            </Button>
+            </Link>
           </div>
         </header>
 
@@ -50,7 +53,7 @@ const RecentReadings = () => {
                 </p>
 
                 <div className="flex flex-col items-center gap-1">
-                  <p className="text-md font-bold text-slate-900">
+                  <p className="text-base font-bold text-slate-900">
                     {item.kwh} kWh
                   </p>
                   <span className="text-emerald-600 font-semibold text-sm">

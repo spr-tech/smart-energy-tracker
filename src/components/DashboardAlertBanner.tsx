@@ -40,14 +40,13 @@ const DashboardAlertBanner = () => {
       { kwh: 0, cost: 0 },
     );
   }, [items]);
-  console.log(currentMonthStats);
 
   const energyPercent = (currentMonthStats.kwh / goals.energyLimit) * 100;
   const budgetPercent = (currentMonthStats.cost / goals.budgetLimit) * 100;
 
   const atLimit =
-    currentMonthStats.kwh >= goals.alertThreshold ||
-    currentMonthStats.cost >= goals.alertThreshold;
+    energyPercent >= goals.alertThreshold ||
+    budgetPercent >= goals.alertThreshold;
 
   const exceededLimit = energyPercent >= 100 || budgetPercent >= 100;
 
@@ -56,6 +55,7 @@ const DashboardAlertBanner = () => {
     : atLimit
       ? "Energy and cost for the month have reached the limit set."
       : null;
+
   if (!alertMessage) return null;
   // const limitExeeded =
 

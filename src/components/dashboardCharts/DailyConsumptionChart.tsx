@@ -21,7 +21,7 @@ const DailyConsumptionChart = () => {
   const chartData = [...items].slice(0, 10).reverse();
 
   return (
-    <div className=" flex flex-col bg-white shadow-md p-3 rounded-lg [&_.recharts-surface]:outline-none">
+    <div className=" flex flex-col bg-white shadow-md p-3 rounded-lg [&_.recharts-surface]:outline-none h-80">
       <div className="mb-5">
         <h1 className="font-bold text-lg">Daily Consumption</h1>
         <p className="text-sm text-slate-500">
@@ -29,7 +29,7 @@ const DailyConsumptionChart = () => {
         </p>
       </div>
 
-      <div className="text-xs min-h-70 w-full flex-1 ">
+      <div className="text-xs  w-full flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
             width={500}
