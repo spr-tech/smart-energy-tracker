@@ -54,6 +54,28 @@ const Login = () => {
 
     if (!isValid) return;
 
+    const saved = localStorage.getItem("registeredUser");
+
+    if (!saved) {
+      setEmailError("Account not found, click signup to register");
+      return;
+    }
+
+    const verifiedUser = JSON.parse(saved) as {
+      email?: string;
+      password?: string;
+    };
+
+    if (verifiedUser.email !== email) {
+      setEmailError("Account not found, click signup to register");
+      return;
+    }
+
+    if (verifiedUser.password !== password) {
+      setPasswordError("incorrect password");
+      return;
+    }
+
     localStorage.setItem("token", "springle");
     localStorage.setItem("loggedEmail", email);
     navigate("/");

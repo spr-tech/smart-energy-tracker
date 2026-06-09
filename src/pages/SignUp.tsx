@@ -62,8 +62,9 @@ const SignUp = () => {
     }
 
     if (!isValid) return;
-
+    localStorage.setItem("registeredUser", JSON.stringify({ email, password }));
     localStorage.setItem("token", "springle");
+    localStorage.setItem("loggedEmail", email);
     navigate("/");
   };
 

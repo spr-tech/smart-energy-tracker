@@ -21,6 +21,7 @@ const DashBoard = () => {
   const GOAL_TOKEN = "energy_token";
   const [goals] = useState<GoalLimits>(() => {
     const saved = localStorage.getItem(GOAL_TOKEN);
+    console.log(saved)
     return saved
       ? JSON.parse(saved)
       : { energyLimit: 0, budgetLimit: 0, alertThreshold: 0 };
@@ -69,7 +70,7 @@ const DashBoard = () => {
     );
   }
   const remainingGoal = goals.energyLimit - totalOfCurrentMonthEnergy;
-
+  console.log("goals,", goals.energyLimit);
   return (
     <div className="outline-none border-none p-6">
       <DashboardAlertBanner />
