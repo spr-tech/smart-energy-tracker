@@ -16,7 +16,7 @@ const DashboardAlertBanner = () => {
     console.log(saved);
     return saved
       ? JSON.parse(saved)
-      : { energyLimit: 0, budgetLimit: 0, alertThreshold: 0 };
+      : { energyLimit: 1000, budgetLimit: 3000, alertThreshold: 50 };
   });
 
   const currentMonthStats = useMemo(() => {
@@ -41,8 +41,15 @@ const DashboardAlertBanner = () => {
     );
   }, [items]);
 
-  const energyPercent = (currentMonthStats.kwh / goals.energyLimit) * 100;
-  const budgetPercent = (currentMonthStats.cost / goals.budgetLimit) * 100;
+  const energyPercent =
+    goals.energyLimit > 0
+      ? (currentMonthStats.kwh / goals.energyLimit) * 100
+      : 0;
+
+  const budgetPercent =
+    goals.budgetLimit > 0
+      ? (currentMonthStats.cost / goals.budgetLimit) * 100
+      : 0;
 
   const atLimit =
     energyPercent >= goals.alertThreshold ||
@@ -55,6 +62,8 @@ const DashboardAlertBanner = () => {
     : atLimit
       ? "Energy and cost for the month have reached the limit set."
       : null;
+
+  console.log("alert,", exceededLimit, atLimit, energyPercent, budgetPercent);
 
   if (!alertMessage) return null;
   // const limitExeeded =

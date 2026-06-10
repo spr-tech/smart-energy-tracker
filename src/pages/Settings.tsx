@@ -1,5 +1,14 @@
 const Settings = () => {
-  return <div>this is the settings page</div>;
+  return (
+    <>
+      <div>
+        <header>
+          <h1>Settings</h1>
+          <p>M</p>
+        </header>
+      </div>
+    </>
+  );
 };
 
 export default Settings;

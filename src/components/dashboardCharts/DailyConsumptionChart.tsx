@@ -18,10 +18,10 @@ const DailyConsumptionChart = () => {
 
   const { items } = context;
 
-  const chartData = [...items].slice(0, 10).reverse();
+  const chartData = [...items].slice(0, 4).reverse();
 
   return (
-    <div className=" flex flex-col bg-white shadow-md p-3 rounded-lg [&_.recharts-surface]:outline-none h-80">
+    <div className=" flex flex-col bg-white shadow-md p-3 rounded-lg  [&_.recharts-surface]:outline-none h-80">
       <div className="mb-5">
         <h1 className="font-bold text-lg">Daily Consumption</h1>
         <p className="text-sm text-slate-500">
@@ -69,7 +69,7 @@ const DailyConsumptionChart = () => {
             />
 
             <Line
-              type="monotone"
+              type="linear"
               dataKey="kwh"
               stroke="#21c45d"
               strokeWidth={2}

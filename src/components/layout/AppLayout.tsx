@@ -24,9 +24,13 @@ const AppLayout = () => {
 
   const { fetchError, handleAddModalClick, successMessage } = context;
   const navigate = useNavigate();
-  const [userEmail] = useState<string | null>(() =>
-    localStorage.getItem("loggedEmail"),
-  );
+
+  const [userInfo] = useState<{ email: string; name: string } | null>(() => {
+    const saved = localStorage.getItem("loggedInfo");
+    console.log("saved", saved);
+    return saved ? JSON.parse(saved) : null;
+  });
+  console.log(userInfo);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -45,7 +49,7 @@ const AppLayout = () => {
       {/* SIDEBAR */}
       <aside className="fixed bottom-0 left-0 right-0 z-40 flex flex-col bg-white border-t border-gray-200 md:relative md:h-full md:w-64 md:min-w-[16rem] md:border-t-0 md:border-r md:border-gray-300/70 shrink-0">
         {/* LOGO */}
-        <div className="hidden md:flex gap-2 items-center my-4 p-4">
+        <div className="hidden md:flex gap-2 items-center my-4 px-4 pt-9 ">
           <span className="bg-green-200 p-3 rounded-lg">
             <Zap size={20} color="green" />
           </span>
@@ -60,7 +64,7 @@ const AppLayout = () => {
         <nav className="flex-1 overflow-y-auto">
           <div className="flex justify-around items-center p-2 md:flex-col md:gap-3 md:p-4 md:items-stretch">
             {/* ADD ACTION BUTTON */}
-            <div className="hidden md:flex bg-button hover:bg-emerald-400 w-full items-center justify-center px-3 py-1 rounded-lg mb-4">
+            <div className="hidden md:flex bg-button hover:bg-emerald-400 w-full items-center justify-center px-3 py-2 rounded-lg mb-4">
               <Button
                 className="flex flex-1 justify-center items-center gap-3 text-white"
                 onClick={handleAddModalClick}
@@ -104,15 +108,15 @@ const AppLayout = () => {
         <footer className="hidden md:flex p-6 flex-col gap-6 items-center bg-white">
           <div className="flex gap-3 items-center w-full px-2">
             <span className="h-9 w-9 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold shrink-0">
-              {userEmail ? userEmail[0].toUpperCase() : "U"}
+              {userInfo ? userInfo?.name[0].toUpperCase() : "U"}
             </span>
 
             <div className="overflow-hidden flex-1 min-w-0">
               <p className="text-sm font-semibold text-gray-800 truncate">
-                {userEmail ? userEmail.split("@")[0] : "Guest User"}
+                {userInfo && userInfo?.name.toUpperCase()}
               </p>
               <span className="text-xs text-gray-400 block truncate">
-                {userEmail}
+                {userInfo?.email}
               </span>
             </div>
           </div>
