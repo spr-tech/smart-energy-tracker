@@ -49,7 +49,7 @@ const AppLayout = () => {
       {/* SIDEBAR */}
       <aside className="fixed bottom-0 left-0 right-0 z-40 flex flex-col bg-white border-t border-gray-200 md:relative md:h-full md:w-64 md:min-w-[16rem] md:border-t-0 md:border-r md:border-gray-300/70 shrink-0">
         {/* LOGO */}
-        <div className="hidden md:flex gap-2 items-center my-4 px-4 pt-9 ">
+        <div className="hidden md:flex gap-2 items-center my-4 p-4 ">
           <span className="bg-green-200 p-3 rounded-lg">
             <Zap size={20} color="green" />
           </span>

@@ -150,7 +150,7 @@ const Goals = () => {
         {/* Header section */}
         <div className="flex flex-col mb-5">
           <h1 className="font-bold text-2xl text-slate-800"> Goals & Limits</h1>
-          <span className="text-slate-600 text-sm">
+          <span className="text-slate-600 ">
             Set monthly targets and track your progress
           </span>
         </div>
