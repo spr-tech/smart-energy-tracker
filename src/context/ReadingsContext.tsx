@@ -19,8 +19,7 @@ type ReadingContextType = {
   energy: number | "";
   setEnergy: React.Dispatch<React.SetStateAction<number | "">>;
 
-  cost: number | "";
-  setCost: React.Dispatch<React.SetStateAction<number | "">>;
+  cost: number | null;
 
   states: string;
   setStates: React.Dispatch<React.SetStateAction<string>>;

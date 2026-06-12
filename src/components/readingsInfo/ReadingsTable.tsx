@@ -81,7 +81,10 @@ const ReadingsTable = () => {
                   {item.kwh} kWh
                 </td>
                 <td className="p-4 text-black text-sm font-semibold">
-                  ₦{item.cost}
+                  {item.cost.toLocaleString("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  })}
                 </td>
                 <td className="p-4 text-black text-sm font-semibold">
                   {item.states}

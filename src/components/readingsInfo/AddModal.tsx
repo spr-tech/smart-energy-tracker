@@ -19,7 +19,6 @@ const AddModal = () => {
     energy,
     setEnergy,
     cost,
-    setCost,
     states,
     setStates,
     editReading,
@@ -56,7 +55,6 @@ const AddModal = () => {
 
       setDate("");
       setEnergy("");
-      setCost("");
       setStates("");
       setModalButton(false);
       setEditReading(null);
@@ -101,7 +99,6 @@ const AddModal = () => {
         ),
       );
 
-      setCost("");
       setDate("");
       setEnergy("");
       setStates("");
@@ -234,6 +231,19 @@ const AddModal = () => {
               value={energy}
               onChange={(e) => setEnergy(Number(e.target.value))}
             />
+
+            <div className="text-slate-400 flex  text-sm">
+              <span>Estimated cost : ₦</span>
+              <input
+                disabled
+                type="number"
+                id="cost"
+                step={0.1}
+                className=" "
+                value={cost !== null ? Math.round(cost) : ""}
+              />
+            </div>
+
             <div className="h-4">
               {energyError && (
                 <span className="text-red-600 text-sm animate-fade-in">
@@ -241,24 +251,6 @@ const AddModal = () => {
                 </span>
               )}
             </div>
-          </div>
-
-          {/* Cost */}
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="cost"
-              className="text-left text-sm font-medium text-slate-700"
-            >
-              Cost Incurred (₦)
-            </label>
-            <input
-              type="number"
-              id="cost"
-              step={0.1}
-              className="outline-button w-full h-10 rounded-lg ring ring-slate-300 p-2"
-              value={cost}
-              onChange={(e) => setCost(Number(e.target.value))}
-            />
           </div>
 
           {/* State */}

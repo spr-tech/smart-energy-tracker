@@ -14,15 +14,14 @@ const ReadingProvider = ({ children }: { children: React.ReactNode }) => {
     "https://6a0371192afe8349b4b5376a.mockapi.io/api/energydata/energydata";
   const [date, setDate] = useState<string>("");
   const [energy, setEnergy] = useState<number | "">("");
-  const [cost, setCost] = useState<number | "">("");
   const [states, setStates] = useState<string>("");
+  const cost = energy ? energy * 201 * 1.075 : null;
 
   const handleShowModal = () => {
     setEditReading(null);
 
     setDate("");
     setEnergy("");
-    setCost("");
     setStates("");
 
     setModalButton(true);
@@ -33,7 +32,6 @@ const ReadingProvider = ({ children }: { children: React.ReactNode }) => {
 
     setDate(item.date);
     setEnergy(item.kwh);
-    setCost(item.cost);
     setStates(item.states);
 
     setModalButton(true);
@@ -52,7 +50,6 @@ const ReadingProvider = ({ children }: { children: React.ReactNode }) => {
         energy,
         setEnergy,
         cost,
-        setCost,
         states,
         setStates,
 

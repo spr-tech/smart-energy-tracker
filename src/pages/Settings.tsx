@@ -8,6 +8,13 @@ const Settings = () => {
             Manage your account and app preferences.
           </span>
         </header>
+
+        <section>
+          <div>
+            <h3>Profile & Preferences</h3>
+            <span>Update your personal info and billing reates</span>
+          </div>
+        </section>
       </div>
     </>
   );
