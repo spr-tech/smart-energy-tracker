@@ -1,8 +1,11 @@
 import { useState } from "react";
 import Button from "../components/ui/Button";
-// import { useContext } from "react";
+import { useContext } from "react";
+import { ReadingContext } from "../context/ReadingsContext";
+import type { Reading } from "../type/types";
 
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -22,6 +25,11 @@ const Settings = () => {
 
   const [saveChanges, setSaveChanges] = useState(false);
 
+  const context = useContext(ReadingContext);
+  if (!context) throw new Error("ReadingContext must be inside a provider");
+
+  const { API_URL, setFetchError, setItems } = context;
+
   const handleSave = () => {
     const updated = { ...userLoggedInfo, ...formValues };
     setUserLoggedInfo(updated);
@@ -33,6 +41,25 @@ const Settings = () => {
   const hasChanges =
     userLoggedInfo?.name !== formValues.name ||
     userLoggedInfo.email !== formValues.email;
+
+  const handleClearReadings = async () => {
+    const confirm = window.confirm(
+      "Are you sure ? This will delete all your readings permanently",
+    );
+    if (!confirm) return;
+
+    try {
+      const { data } = await axios.get(API_URL);
+      await Promise.all(
+        data.map((item: Reading) => axios.delete(`${API_URL}/${item.id}`)),
+      );
+      setItems([]);
+    } catch (err) {
+      if (err instanceof Error) {
+        setFetchError(err.message);
+      }
+    }
+  };
 
   const handleSignOut = () => {
     localStorage.clear();
@@ -67,7 +94,7 @@ const Settings = () => {
                 className="outline-button h-10 w-full md:w-80 rounded-lg ring ring-slate-300 p-2"
                 value={formValues?.name}
                 onChange={(e) =>
-                  setFormValues((v) => ({ ...v, name: e.target.value }))
+                  setFormValues((prev) => ({ ...prev, name: e.target.value }))
                 }
               />
             </div>
@@ -78,8 +105,8 @@ const Settings = () => {
               <input
                 type="text"
                 disabled
-                className="outline-button w-full h-10 md:w-80 rounded-lg ring
-              ring-slate-300 p-2 cursor-not-allowed text-slate-400"
+                className="outline-button w-full h-10 md:w-80 rounded-lg  cursor-not-allowed ring
+              ring-slate-300 p-2 text-slate-800"
                 value={formValues?.email}
               />
             </div>
@@ -118,7 +145,10 @@ const Settings = () => {
               </span>
             </div>
 
-            <Button className="bg-red-600 text-white p-2 rounded-lg hover:bg-red-300 transition-colors duration-200">
+            <Button
+              onClick={handleClearReadings}
+              className="bg-red-600 text-white p-2 rounded-lg hover:bg-red-300 transition-colors duration-200"
+            >
               Clear Readings
             </Button>
           </div>

@@ -282,10 +282,7 @@ const Goals = () => {
                 <input
                   type="number"
                   id="budget"
-                  value={updatedUserGoals.budgetLimit.toLocaleString("en-NG", {
-                    style: "currency",
-                    currency: "NGN",
-                  })}
+                  value={updatedUserGoals.budgetLimit}
                   onChange={(e) =>
                     setUpdatedUserGoals((v) => ({
                       ...v,

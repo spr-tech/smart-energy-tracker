@@ -21,7 +21,7 @@ const SidebarLinks = ({ to, icon, label }: SidebarLinksProps) => {
     >
       <span className="relative group">
         {icon}
-        <span className="absolute bottom-full mt-2 left-1/2 -translate-x-1/2 bg-button text-white text-xs px-2 py-1 rounded whitespace-nowrap hidden group-hover:block md:hidden">
+        <span className="absolute bottom-full mt-2 left-1/2 -translate-x-1/2 bg-button text-white text-xs px-2 py-1 rounded whitespace-nowrap hidden group-hover:block md:group-hover:hidden ">
           {label}
         </span>
       </span>
