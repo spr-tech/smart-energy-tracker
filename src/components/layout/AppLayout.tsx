@@ -26,8 +26,8 @@ const AppLayout = () => {
   const navigate = useNavigate();
 
   const [userInfo] = useState<{ email: string; name: string } | null>(() => {
-    const saved = localStorage.getItem("loggedInfo");
-    console.log("saved", saved);  
+    const saved = localStorage.getItem("registeredUser");
+    console.log("saved", saved);
     return saved ? JSON.parse(saved) : null;
   });
   console.log(userInfo);
@@ -35,7 +35,7 @@ const AppLayout = () => {
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
-  };          
+  };
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-50 overflow-hidden">

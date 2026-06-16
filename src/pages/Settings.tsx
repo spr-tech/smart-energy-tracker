@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Button from "../components/ui/Button";
+// import { useContext } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
+  const navigate = useNavigate();
+
   const [userLoggedInfo, setUserLoggedInfo] = useState<{
     name: string;
     email: string;
@@ -28,6 +33,11 @@ const Settings = () => {
   const hasChanges =
     userLoggedInfo?.name !== formValues.name ||
     userLoggedInfo.email !== formValues.email;
+
+  const handleSignOut = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
 
   return (
     <>
@@ -76,8 +86,17 @@ const Settings = () => {
           </div>
 
           <div>
-            <Button className="bg-button text-white text-lg p-2 rounded-lg font-medium hover:bg-green-300">
-              Save Changes
+            <Button
+              onClick={handleSave}
+              className={`text-white text-lg p-2 rounded-lg font-medium transition-colors duration-200 ${
+                saveChanges
+                  ? "bg-green-400 cursor-default"
+                  : hasChanges
+                    ? "bg-button hover:bg-green-300"
+                    : "bg-slate-300 cursor-not-allowed"
+              }`}
+            >
+              {saveChanges ? "Saved ✓" : "Save Changes"}
             </Button>
           </div>
         </section>
@@ -99,21 +118,26 @@ const Settings = () => {
               </span>
             </div>
 
-            <Button className="bg-red-600 text-white p-2 rounded-lg hover:bg-red-300">
+            <Button className="bg-red-600 text-white p-2 rounded-lg hover:bg-red-300 transition-colors duration-200">
               Clear Readings
             </Button>
           </div>
 
           {/* Sign out */}
-          <div className="flex justify-between items-center border border-red-200 p-3  rounded-lg">
+          <div className="flex justify-between items-center border border-red-200 p-3 rounded-lg">
             <div>
-              <h1 className="text-slate-800 font-medium ">Sign Out</h1>
+              <h1 className="text-slate-800 font-medium transition-colors duration-300">
+                Sign Out
+              </h1>
               <span className="text-slate-500">
                 Log out of your account on this device
               </span>
             </div>
 
-            <Button className=" text-slate-800 p-2 rounded-lg border border-slate-200 shadow-sm hover:bg-black hover:text-white">
+            <Button
+              onClick={handleSignOut}
+              className=" text-slate-800 p-2 rounded-lg border border-slate-200 shadow-sm hover:bg-black hover:text-white transition-colors duration-200"
+            >
               Sign Out
             </Button>
           </div>

@@ -78,10 +78,7 @@ const Login = () => {
     }
 
     localStorage.setItem("token", "springle");
-    localStorage.setItem(
-      "loggedInfo",
-      JSON.stringify({ email, name: verifiedUser.name }),
-    );
+
     navigate("/");
   };
 
