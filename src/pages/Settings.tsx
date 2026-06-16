@@ -106,7 +106,7 @@ const Settings = () => {
                 type="text"
                 disabled
                 className="outline-button w-full h-10 md:w-80 rounded-lg  cursor-not-allowed ring
-              ring-slate-300 p-2 text-slate-800"
+              ring-slate-300 p-2 text-slate-400"
                 value={formValues?.email}
               />
             </div>
